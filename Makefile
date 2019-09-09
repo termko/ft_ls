@@ -1,2 +1,5 @@
+CC=clang
+OUTF=ft_ls
+
 all: 
-	gcc *.c libft/libft.a
+	$(CC) *.c -o $(OUTF) libft/libft.a
