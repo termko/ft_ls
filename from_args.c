@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void	fill_file(t_dirs *dir, t_fil *file, char *name, struct stat stat)
+void	fill_file(t_fil *file, char *name, struct stat stat)
 {
 	struct group	*grp;
 	struct passwd	*tf;
@@ -33,68 +33,74 @@ void	fill_file(t_dirs *dir, t_fil *file, char *name, struct stat stat)
 	file->next = NULL;
 }
 
-void	put_file(t_dirs *dir, char *name, struct stat stat)
+void	put_file(t_cont *cont, char *name, struct stat stat)
 {
 	t_fil *file;
 
-	file = dir->file;
-	if (!dir->file)
+	if (!cont->files)
 	{
-		check_malloc(dir->file = (t_fil*)malloc(sizeof(t_fil)));
-		file = dir->file;
+		check_malloc(cont->files = (t_fil*)malloc(sizeof(t_fil)));
+		file = cont->files;
 	}
 	else
 	{
-		file = dir->file;
+		file = cont->files;
 		while (file->next)
 			file = file->next;
 		check_malloc(file->next = (t_fil*)malloc(sizeof(t_fil)));
 		file = file->next;
 	}
-	fill_file(dir, file, name, stat);
+	fill_file(file, name, stat);
 }
 
-t_dirs	*set_path(int ac, char **av, t_fl fl)
+t_cont	*set_path(int ac, char **av, t_fl fl)
 {
-	t_dirs		*dir;
+	t_cont		*cont;
 	struct stat	stat;
 	int			i;
 	char		*tmp;
 	t_dirs		*iter;
 
-	check_malloc(dir = (t_dirs*)malloc(sizeof(t_dirs)));
-	dir->name = NULL;
-	dir->file = NULL;
-	dir->from_av = 1;
-	dir->fil_num = 0;
-	dir->dir_num = 0;
+	check_malloc(cont = (t_cont*)malloc(sizeof(t_cont)));
+	cont->name = NULL;
+	cont->files = NULL;
+	cont->dirs = NULL;
+	cont->from_av = 1;
+	cont->fil_num = 0;
+	cont->dir_num = 0;
 	i = 0;
-	iter = dir;
+	iter = cont->dirs;
 	while (i < ac)
 	{
 		if (lstat(av[i], &stat))
 		{
-			printf("ls: %s: No such file or directory\n", av[i]);
+			printf("ls: %s: No such file or directory\n", av[i]); // TODO: ERRNO STRERR
 			i++;
 			continue ;
 		}
 		if (S_ISREG(stat.st_mode))
 		{
-			put_file(dir, av[i], stat);
-			dir->fil_num++;
+			put_file(cont, av[i], stat);
+			cont->fil_num++;
 		}
 		else if (S_ISDIR(stat.st_mode))
 		{
-			tmp = ft_strnew(ft_strlen(av[i]) + 2);
-			tmp = ft_strcat(tmp, av[i]);
-			tmp = ft_strcat(tmp, "/");
-			iter->next = create_dir(tmp, fl, 0);
-			iter = iter->next;
+			tmp = ft_strdup(av[i]);
+			if (iter)
+			{
+				iter->next = create_dir(tmp, fl, 0);
+				iter = iter->next;
+			}
+			else
+			{
+				cont->dirs = create_dir(tmp, fl, 0);
+				iter = cont->dirs;
+			}
 			free(tmp);
 		}
 		i++;
 	}
-	dir->num = dir->dir_num + dir->fil_num;
-	fill_fileaddr(dir);
-	return (dir);
+	cont->num = cont->dir_num + cont->fil_num;
+	fill_fileaddr(cont);
+	return (cont);
 }

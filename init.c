@@ -78,48 +78,56 @@ void		init_fl(int *ac, char ***av, t_fl *fl)
 	*av += i;
 }
 
-t_dirs	*create_dir(char *path, t_fl fl, int is_root)
+t_cont	*create_cont(char *path, t_fl fl, int is_root)
 {
-	t_dirs	*dir;
+	t_cont	*cont;
 
-	if (!(dir = (t_dirs*)malloc(sizeof(t_dirs))))
+	if (!(cont = (t_cont*)malloc(sizeof(t_cont))))
 		return (NULL);
-	dir->name = ft_strnew(ft_strlen(path) + 1);
-	dir->name = ft_strcat(dir->name, path);
-	dir->is_root = is_root;
-	dir->from_av = 0;
-	get_num_of_files(dir, fl.a);
+	cont->name = ft_strdup(path);
+	cont->is_root = is_root;
+	cont->from_av = 0;
+	get_num_of_files(cont, fl.a);
 	// printf("num of files = %d\n", fold->fil_num);
 	// printf("num of dirs = %d\n", fold->dir_num);
-	fill_files_from_path(dir, fl);
-	fl.l ? set_max_len(dir, fl) : fl.l;
+	fill_files_from_path(cont, fl);
+	fill_fileaddr(cont);
+	return (cont);
+}
+
+t_dirs	*create_dir(char *path, t_fl fl, int is_root)
+{
+	t_dirs *dir;
+
+	check_malloc(dir = (t_dirs*)malloc(sizeof(t_dirs)));
+	dir->name = ft_strdup(path);
+	dir->cont = create_cont(path, fl, is_root);
 	dir->next = NULL;
-	fill_fileaddr(dir);
 	return (dir);
 }
 
-void	set_max_len(t_dirs *fold, t_fl fl)
+void	set_max_len(t_cont *cont)
 {
 	t_fil	*head;
 	long	tmp_len;
 
-	head = fold->file;
-	fold->total = 0;
-	fold->link_len = 0;
-	fold->own_len = 0;
-	fold->grp_len = 0;
-	fold->size_len = 0;
+	head = cont->files;
+	cont->total = 0;
+	cont->link_len = 0;
+	cont->own_len = 0;
+	cont->grp_len = 0;
+	cont->size_len = 0;
 	while (head)
 	{
-		fold->total += head->stat.st_blocks;
+		cont->total += head->stat.st_blocks;
 		tmp_len = ft_strlen(ft_intmaxtoa(head->stat.st_nlink, 10));
-		fold->link_len = tmp_len > fold->link_len ? tmp_len : fold->link_len;
-		tmp_len = ft_strlen(fold->file->owner);
-		fold->own_len = tmp_len > fold->own_len ? tmp_len : fold->own_len;
-		tmp_len = ft_strlen(fold->file->group);
-		fold->grp_len = tmp_len > fold->grp_len ? tmp_len : fold->grp_len;
-		tmp_len = ft_strlen(ft_intmaxtoa(fold->file->stat.st_size, 10));
-		fold->size_len = tmp_len > fold->size_len ? tmp_len : fold->size_len;
+		cont->link_len = tmp_len > cont->link_len ? tmp_len : cont->link_len;
+		tmp_len = ft_strlen(head->owner);
+		cont->own_len = tmp_len > cont->own_len ? tmp_len : cont->own_len;
+		tmp_len = ft_strlen(head->group);
+		cont->grp_len = tmp_len > cont->grp_len ? tmp_len : cont->grp_len;
+		tmp_len = ft_strlen(ft_intmaxtoa(head->stat.st_size, 10));
+		cont->size_len = tmp_len > cont->size_len ? tmp_len : cont->size_len;
 		head = head->next;
 	}
 }
