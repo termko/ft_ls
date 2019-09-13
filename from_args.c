@@ -78,25 +78,12 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 			i++;
 			continue ;
 		}
-		if (S_ISREG(stat.st_mode))
+		if (S_ISDIR(stat.st_mode))
+				create_dir(cont, av[i], fl, 0);
+		else
 		{
 			put_file(cont, av[i], stat);
 			cont->fil_num++;
-		}
-		else if (S_ISDIR(stat.st_mode))
-		{
-			tmp = ft_strdup(av[i]);
-			if (iter)
-			{
-				iter->next = create_dir(tmp, fl, 0);
-				iter = iter->next;
-			}
-			else
-			{
-				cont->dirs = create_dir(tmp, fl, 0);
-				iter = cont->dirs;
-			}
-			free(tmp);
 		}
 		i++;
 	}

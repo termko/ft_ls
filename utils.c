@@ -36,5 +36,4 @@ void	fill_fileaddr(t_cont *cont)
 		tmp = tmp->next;
 	}
 	cont->faddr[i] = NULL;
-	i = 0;
 }

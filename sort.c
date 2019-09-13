@@ -24,36 +24,6 @@ void	re_cmp(char **lower, char **upper)
 	}	
 }
 
-/*
-void	first_sort(char **arg, int end)
-{
-	int		low;
-	int		upp;
-	char	*piv;
-
-	if (!arg || !*arg || end <= 1)
-		return ;
-	piv = arg[end / 2];
-	low = 0;
-	upp = end - 1;
-	while (low < upp)
-	{	
-		while (ft_strcmp(arg[low], piv) < 0)
-			low++;
-		while (ft_strcmp(arg[upp], piv) > 0)
-			upp--;
-		if (low < upp)
-		{	
-			re_cmp(&arg[low], &arg[upp]);
-			low++;
-			upp--;
-		}
-	}
-	first_sort(arg, low);
-	first_sort(&arg[low], end - low);
-}
-*/
-
 void	first_sort(char **arg)
 {
 	int i;
@@ -79,7 +49,9 @@ void	change_faddr(t_fil **a, t_fil **b, int r, int res)
 	int		flag;
 
 	flag = 0;
-	if (!res && r)
+	if (res)
+		flag = 1;
+	else if (!res && r)
 	{
 		if (sort_rev(*a, *b) < 0)
 			flag = 1;
@@ -89,8 +61,6 @@ void	change_faddr(t_fil **a, t_fil **b, int r, int res)
 		if (sort_standart(*a, *b) < 0)
 			flag = 1;
 	}
-	else
-		flag = 1;
 	if (flag)
 	{
 		tmp = *a;
@@ -98,8 +68,6 @@ void	change_faddr(t_fil **a, t_fil **b, int r, int res)
 		*b = tmp;
 	}
 }
-
-// TODO: NO CASE CMP
 
 int		sort_standart(t_fil *a, t_fil *b)
 {
@@ -140,15 +108,15 @@ void	sort_master(t_cont *cont, t_fl fl)
 		if (fl.t)
 			sort = sort_time;
 		else
-			return ;
+			sort = sort_standart;
 	}
 	i = 0;
 	while (i < cont->num)
 	{
-		j = 0;
+		j = i;
 		while (j < cont->num)
 		{
-			if ((res = sort(cont->faddr[i], cont->faddr[j])) <= 0)
+			if ((res = sort(cont->faddr[i], cont->faddr[j])) > 0)
 				change_faddr(&cont->faddr[i], &cont->faddr[j], fl.r, res);
 			j++;
 		}

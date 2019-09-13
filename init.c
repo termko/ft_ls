@@ -42,7 +42,7 @@ int		fill_opt(t_fl *fl, char *arg)
 
 	flags = "lRartf1";
 	if (!fl || !arg)
-		return (-1);
+		return (0);
 	i = 0;
 	while (arg[i])
 	{
@@ -70,10 +70,14 @@ void		init_fl(int *ac, char ***av, t_fl *fl)
 
 	if (!av || !*av)
 		exit(1);
-	i = 0;
-	while (++i < *ac && (*av)[i][0] == '-')
+	count = 0;
+	i = 1;
+	while (i < *ac && (*av)[i][0] == '-')
+	{
 		if ((*av)[i][1])
-			count += fill_opt(fl, (*av)[i] + 1) != -1 ? 1 : 0;
+			count += fill_opt(fl, (*av)[i] + 1);
+		i++;
+	}
 	*ac -= count + 1;
 	*av += i;
 }
@@ -85,6 +89,8 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 	if (!(cont = (t_cont*)malloc(sizeof(t_cont))))
 		return (NULL);
 	cont->name = ft_strdup(path);
+	cont->dirs = NULL;
+	cont->files = NULL;
 	cont->is_root = is_root;
 	cont->from_av = 0;
 	get_num_of_files(cont, fl.a);
@@ -95,15 +101,26 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 	return (cont);
 }
 
-t_dirs	*create_dir(char *path, t_fl fl, int is_root)
+void	create_dir(t_cont *cont, char *path, t_fl fl, int is_root)
 {
 	t_dirs *dir;
 
-	check_malloc(dir = (t_dirs*)malloc(sizeof(t_dirs)));
+	if (!cont->dirs)
+	{
+		check_malloc(cont->dirs = (t_dirs*)malloc(sizeof(t_dirs)));
+		dir = cont->dirs;
+	}
+	else
+	{
+		dir = cont->dirs;
+		while (dir->next)
+			dir = dir->next;
+		check_malloc(dir->next = (t_dirs*)malloc(sizeof(t_dirs)));
+		dir = dir->next;
+	}
 	dir->name = ft_strdup(path);
 	dir->cont = create_cont(path, fl, is_root);
 	dir->next = NULL;
-	return (dir);
 }
 
 void	set_max_len(t_cont *cont)

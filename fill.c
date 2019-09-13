@@ -1,11 +1,13 @@
 #include "ft_ls.h"
 
-void	set_details(t_fil *file)
+void	set_details(t_cont *cont, t_fl fl)
 {
 	struct stat		fst;
 	struct group	*grp;
 	struct passwd	*tf;
+	t_fil		*file;
 
+	file = cont->files;
 	while (file)
 	{
 		if (!lstat(file->full_path, &file->stat))
@@ -19,10 +21,38 @@ void	set_details(t_fil *file)
 			else
 				file->owner = ft_strdup(tf->pw_name);
 		}
+/*
+		if (fl.up_r && S_ISDIR(file->stat.st_mode))
+			create_dir(cont, file->full_path, fl, 0);
+*/
 		if (!file->owner || !file->group)
 			printf("ERROR LSTAT\n");
 		file = file->next;
 	}
+}
+
+char	*set_fullname(char *fold, char *file)
+{
+	char	*ret;
+	int		foldlen;
+	int		filelen;
+
+	foldlen = ft_strlen(fold);
+	filelen = ft_strlen(file);
+	if (fold[foldlen - 1] != '/')
+	{
+		check_malloc(ret = ft_strnew(foldlen + filelen + 1));
+		ret = ft_strcat(ret, fold);
+		ret = ft_strcat(ret, "/");
+		ret = ft_strcat(ret, file);
+	}
+	else
+	{
+		check_malloc(ret = ft_strnew(foldlen + filelen));
+		ret = ft_strcat(ret, fold);
+		ret = ft_strcat(ret, file);
+	}
+	return (ret);
 }
 
 void	fill_files_from_path(t_cont *cont, t_fl fl)
@@ -47,14 +77,19 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 				exit(1);
 			}
 			i++;
-			head->full_path = ft_strjoin(cont->name, dir->d_name);
+			head->full_path = set_fullname(cont->name, dir->d_name);
 			head->name = ft_strdup(dir->d_name);
 			head->next = i < cont->num ?
 				(t_fil*)malloc(sizeof(t_fil)) : NULL;
 			head = head->next;
 		}
+	if (!i)
+	{
+		free(cont->files);
+		cont->files = NULL;
+	}
 	closedir(d);
-	set_details(cont->files);
+	set_details(cont, fl);
 }
 
 int in_which_inter(int max_len)
