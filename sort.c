@@ -121,7 +121,7 @@ int		sort_timerev(t_fil *a, t_fil *b)
 	return (a->stat.st_mtime - b->stat.st_mtime);
 }
 
-void	sort_master(t_dirs *dir, t_fl fl)
+void	sort_master(t_cont *cont, t_fl fl)
 {
 	int		(*sort)(t_fil *a, t_fil *b);
 	int		i;
@@ -143,13 +143,13 @@ void	sort_master(t_dirs *dir, t_fl fl)
 			return ;
 	}
 	i = 0;
-	while (i < dir->num)
+	while (i < cont->num)
 	{
 		j = 0;
-		while (j < dir->num)
+		while (j < cont->num)
 		{
-			if ((res = sort(dir->faddr[i], dir->faddr[j])) <= 0)
-				change_faddr(&dir->faddr[i], &dir->faddr[j], fl.r, res);
+			if ((res = sort(cont->faddr[i], cont->faddr[j])) <= 0)
+				change_faddr(&cont->faddr[i], &cont->faddr[j], fl.r, res);
 			j++;
 		}
 		i++;

@@ -14,20 +14,17 @@
 
 int		main(int argc, char **argv)
 {
-	t_dirs	*path;
+	t_cont	*cont;
 	t_fl	fl;
 
 	fl = (t_fl){0, 0, 0, 0, 0, 0};
 	init_fl(&argc, &argv, &fl);
-//	print_args(argv, argc);
 	first_sort(argv);
-	path = argc == 0 ? create_dir("./", fl, 1) : set_path(argc, argv, fl);
+	cont = (argc == 0 ? create_cont("./", fl, 1) : set_path(argc, argv, fl));
 
-//	print_args(argv, argc);
-	sort_master(path, fl);
+	sort_master(cont, fl);
 	if (fl.l)
-		len_count(path);
-	print_master(path, fl);
-	// print_flags(&fl);
+		set_max_len(cont);
+	print_master(cont, fl);
 	return (0);
 }

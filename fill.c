@@ -25,7 +25,7 @@ void	set_details(t_fil *file)
 	}
 }
 
-void	fill_files_from_path(t_dirs *fold, t_fl fl)
+void	fill_files_from_path(t_cont *cont, t_fl fl)
 {
 	DIR				*d;
 	t_fil			*head;
@@ -33,44 +33,28 @@ void	fill_files_from_path(t_dirs *fold, t_fl fl)
 	int				i;
 	int				len;
 
-	if (!(fold->file = (t_fil*)malloc(sizeof(t_fil)))
-		|| !(d = opendir(fold->name)))
+	if (!(cont->files = (t_fil*)malloc(sizeof(t_fil)))
+		|| !(d = opendir(cont->name)))
 		return ;
 	i = 0;
-	head = fold->file;
+	head = cont->files;
 	while ((dir = readdir(d)))
 		if (dir->d_name[0] != '.' || fl.a)
 		{
+			if (!head)
+			{
+				ft_putendl("Unexpected error with malloc! Exiting...");
+				exit(1);
+			}
 			i++;
-			head->full_path = ft_strjoin(fold->name, dir->d_name);
+			head->full_path = ft_strjoin(cont->name, dir->d_name);
 			head->name = ft_strdup(dir->d_name);
-			head->next = i < fold->fil_num + fold->dir_num ?
+			head->next = i < cont->num ?
 				(t_fil*)malloc(sizeof(t_fil)) : NULL;
 			head = head->next;
 		}
 	closedir(d);
-	set_details(fold->file);
-}
-
-void	len_count(t_dirs *dir)
-{
-	t_fil		*file;
-	int			len;
-	struct stat	stats;
-
-	file = dir->file;
-	while (file)
-	{
-		len = ft_strlen(ft_intmaxtoa(stats.st_nlink, 10));
-		dir->link_len = (len > dir->link_len ? len : dir->link_len);
-		len = ft_strlen(file->group);
-		dir->grp_len = (len > dir->grp_len ? len : dir->grp_len);
-		len = ft_strlen(file->owner);
-		dir->own_len = (len > dir->own_len ? len : dir->own_len);
-		len = ft_strlen(ft_intmaxtoa(stats.st_size, 10));
-		dir->size_len = (len > dir->size_len ? len : dir->size_len);
-		file = file->next;
-	}
+	set_details(cont->files);
 }
 
 int in_which_inter(int max_len)
@@ -84,28 +68,28 @@ int in_which_inter(int max_len)
     return (max_len);
 }
 
-void	get_num_of_files(t_dirs *fold, int fl_a)
+void	get_num_of_files(t_cont *cont, int fl_a)
 {
 	DIR				*d;
     unsigned int	len;
 	int				ret;
     struct dirent	*dir;
 
-    fold->mlen = 0;
-	fold->fil_num = 0;
+    cont->mlen = 0;
+	cont->fil_num = 0;
 	ret = 0;
-    if (!(d = opendir(fold->name)))
+    if (!(d = opendir(cont->name)))
 		return ;
 	while ((dir = readdir(d)))
 		if (dir->d_name[0] != '.' || fl_a)
 		{
 			len = ft_strlen(dir->d_name);
-           	fold->mlen = len > fold->mlen ? len : fold->mlen;
-			fold->fil_num += is_file(dir->d_name) ? 1: 0;
+           	cont->mlen = len > cont->mlen ? len : cont->mlen;
+			cont->fil_num += is_file(dir->d_name) ? 1: 0;
 			ret++;
 		}
 	closedir(d);
-	fold->mlen = in_which_inter(fold->mlen);
-	fold->dir_num = ret - fold->fil_num;
-	fold->num = fold->dir_num + fold->fil_num;
+	cont->mlen = in_which_inter(cont->mlen);
+	cont->dir_num = ret - cont->fil_num;
+	cont->num = ret;
 }
