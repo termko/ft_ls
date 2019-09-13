@@ -100,7 +100,7 @@ int		fill_opt(t_fl *fl, char *arg);
 void	init_fl(int *ac, char ***av, t_fl *fl);
 int		is_file(char *path);
 void	set_max_len(t_cont *cont);
-t_dirs		*create_dir(char *path, t_fl fl, int is_root);
+void		create_dir(t_cont *cont, char *path, t_fl fl, int is_root);
 // void	check_if_files_exist(char **av);
 
 //------------------main container init

@@ -111,12 +111,12 @@ void	print_link(t_fil *file)
 
 void	detail_print(t_cont *cont, t_fil *file)
 {
-	if (file->is_dir)
+	if (file->is_dir && cont->from_av)
 		return ;
 	print_type(file->stat.st_mode);
 	print_permissions(file->stat.st_mode);
 //	print_xattr(file->full_path);
-	printf("%*lu ", cont->link_len, file->stat.st_nlink);
+	printf(" %*lu ", cont->link_len, file->stat.st_nlink);
 	print_owngroup(file, cont);
 	printf(" %*ld", cont->size_len, file->stat.st_size);
 	print_time(file->stat);
@@ -148,20 +148,29 @@ void	print_master(t_cont *cont, t_fl fl)
 	else
 		print = normal_print;
 	flag = 0;
-	while (cont) // REDO WITH RECURSION
+//DO SOMETHING ABOUT IT, THINK!!!
+	
+/*
+	if (!fl.l && cont->is_root && cont->from_av)
 	{
-		if (!cont->is_root && fl.l && !cont->from_av)
-			printf("total %ld\n", cont->total);
-		i = 0;
-		while (cont->faddr[i])
-		{
-			print(cont, cont->faddr[i]);
-			i++;
-		}
-		while (cont->dirs)
-		{
-			print_master(cont->dirs->cont, fl);
-			cont->dirs = cont->dirs->next;
-		}
+		printf("\n\n%s:\ntotal %ld\n", cont->name, cont->total);
+	}
+*/
+	if (cont->is_root && fl.up_r)
+		printf("%s:\n", cont->name);
+	if (!cont->is_root && !cont->from_av)
+	{
+		printf("\n%s:\n", cont->name);
+	}
+	if (fl.l && !cont->from_av)
+	{
+		printf("total %ld\n", cont->total);
+	}
+
+	i = 0;
+	while (cont->faddr[i])
+	{
+		print(cont, cont->faddr[i]);
+		i++;
 	}
 }
