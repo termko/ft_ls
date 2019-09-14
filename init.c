@@ -93,9 +93,10 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 	cont->files = NULL;
 	cont->is_root = is_root;
 	cont->from_av = 0;
+	cont->dir_num = 0;
+	cont->fil_num = 0;
+	cont->num = 0;
 	get_num_of_files(cont, fl.a);
-	// printf("num of files = %d\n", fold->fil_num);
-	// printf("num of dirs = %d\n", fold->dir_num);
 	fill_files_from_path(cont, fl);
 	fill_fileaddr(cont);
 	return (cont);

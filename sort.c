@@ -111,10 +111,10 @@ void	sort_master(t_cont *cont, t_fl fl)
 			sort = sort_standart;
 	}
 	i = 0;
-	while (i < cont->num)
+	while (cont->faddr[i])
 	{
 		j = i;
-		while (j < cont->num)
+		while (cont->faddr[j])
 		{
 			if ((res = sort(cont->faddr[i], cont->faddr[j])) > 0)
 				change_faddr(&cont->faddr[i], &cont->faddr[j], fl.r, res);

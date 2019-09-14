@@ -59,17 +59,16 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 	struct stat	stat;
 	int			i;
 	char		*tmp;
-	t_dirs		*iter;
 
 	check_malloc(cont = (t_cont*)malloc(sizeof(t_cont)));
 	cont->name = NULL;
 	cont->files = NULL;
 	cont->dirs = NULL;
 	cont->from_av = 1;
+	cont->is_root = 1;
 	cont->fil_num = 0;
 	cont->dir_num = 0;
 	i = 0;
-	iter = cont->dirs;
 	while (i < ac)
 	{
 		if (lstat(av[i], &stat))
@@ -79,7 +78,7 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 			continue ;
 		}
 		if (S_ISDIR(stat.st_mode))
-				create_dir(cont, av[i], fl, 0);
+			create_dir(cont, av[i], fl, 0);
 		else
 		{
 			put_file(cont, av[i], stat);
@@ -87,7 +86,8 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 		}
 		i++;
 	}
-	cont->num = cont->dir_num + cont->fil_num;
+	cont->dir_num = i - cont->fil_num;
+	cont->num = i;
 	fill_fileaddr(cont);
 	return (cont);
 }

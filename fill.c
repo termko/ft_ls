@@ -68,7 +68,7 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 		return ;
 	i = 0;
 	head = cont->files;
-	while ((dir = readdir(d)))
+	while ((dir = readdir(d)) && cont->num)
 		if (dir->d_name[0] != '.' || fl.a)
 		{
 			if (!head)
@@ -79,6 +79,7 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 			i++;
 			head->full_path = set_fullname(cont->name, dir->d_name);
 			head->name = ft_strdup(dir->d_name);
+			head->is_dir = (is_file(head->full_path) ? 0 : 1);
 			head->next = i < cont->num ?
 				(t_fil*)malloc(sizeof(t_fil)) : NULL;
 			head = head->next;

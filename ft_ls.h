@@ -123,5 +123,5 @@ void	check_malloc(void *addr);
 void	fill_fileaddr(t_cont *cont);
 
 //------------------print.c
-void	print_master(t_cont *cont, t_fl fl);
+void	print_master(t_cont *cont, t_fl fl, int ac);
 #endif

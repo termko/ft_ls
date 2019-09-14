@@ -109,37 +109,51 @@ void	print_link(t_fil *file)
 	
 }
 
-void	detail_print(t_cont *cont, t_fil *file)
+void	detail_print(t_cont *cont)
 {
-	if (file->is_dir && cont->from_av)
-		return ;
-	print_type(file->stat.st_mode);
-	print_permissions(file->stat.st_mode);
-//	print_xattr(file->full_path);
-	printf(" %*lu ", cont->link_len, file->stat.st_nlink);
-	print_owngroup(file, cont);
-	printf(" %*ld", cont->size_len, file->stat.st_size);
-	print_time(file->stat);
-	printf(" %s", file->name);
-	print_link(file);
-	printf("\n");
+	int		i;
+	t_fil	*file;
+
+	i = 0;
+	while (cont->faddr[i])
+	{
+		file = cont->faddr[i];
+		if (file->is_dir && cont->from_av)
+			return ;
+		print_type(file->stat.st_mode);
+		print_permissions(file->stat.st_mode);
+//		print_xattr(file->full_path);
+		printf(" %*lu ", cont->link_len, file->stat.st_nlink);
+		print_owngroup(file, cont);
+		printf(" %*ld", cont->size_len, file->stat.st_size);
+		print_time(file->stat);
+		printf(" %s", file->name);
+		print_link(file);
+		printf("\n");
+		i++;
+	}
 }
 
 void	normal_print(t_cont *cont, t_fil *file)
 {
-	printf("%s\n", file->name);
+	// CODE WITHOUT FLAGS TO PRINT
 }
 
-void	onestr_print(t_cont *cont, t_fil *file)
+void	onestr_print(t_cont *cont)
 {
-	printf("%s\n", file->name);
+	int i;
+
+	i = 0;
+	while (cont->faddr[i])
+	{
+		printf("%s\n", cont->faddr[i]->name);
+		i++;
+	}
 }
 
-void	print_master(t_cont *cont, t_fl fl)
+void	print_master(t_cont *cont, t_fl fl, int ac)
 {
 	void	(*print)(t_cont *cont, t_fil *file);
-	int		i;
-	int		flag;
 
 	if (fl.l)
 		print = detail_print;
@@ -147,30 +161,18 @@ void	print_master(t_cont *cont, t_fl fl)
 		print = onestr_print;
 	else
 		print = normal_print;
-	flag = 0;
-//DO SOMETHING ABOUT IT, THINK!!!
 	
-/*
-	if (!fl.l && cont->is_root && cont->from_av)
-	{
-		printf("\n\n%s:\ntotal %ld\n", cont->name, cont->total);
-	}
-*/
-	if (cont->is_root && fl.up_r)
+	if (!cont->is_root && fl.up_r)
 		printf("%s:\n", cont->name);
-	if (!cont->is_root && !cont->from_av)
+	else if (!cont->is_root && !cont->from_av && ac > 1)
 	{
-		printf("\n%s:\n", cont->name);
+		printf("%s:\n", cont->name);
 	}
+
 	if (fl.l && !cont->from_av)
 	{
 		printf("total %ld\n", cont->total);
 	}
 
-	i = 0;
-	while (cont->faddr[i])
-	{
-		print(cont, cont->faddr[i]);
-		i++;
-	}
+	print(cont);
 }

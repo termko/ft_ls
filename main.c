@@ -12,14 +12,15 @@
 
 #include "ft_ls.h"
 
-void		sort_print(t_cont *cont, t_fl fl)
+void		sort_print(t_cont *cont, t_fl fl, int ac)
 {
-	int i;
+	int		i;
+	t_dirs	*dir;
 
 	sort_master(cont, fl);
 	if (fl.l)
 		set_max_len(cont);
-	print_master(cont, fl);
+	print_master(cont, fl, ac);
 	if (fl.up_r && cont->dir_num)
 	{
 		i = 0;
@@ -29,12 +30,18 @@ void		sort_print(t_cont *cont, t_fl fl)
 				create_dir(cont, cont->faddr[i]->full_path, fl, 0);
 			i++;
 		}
+		if (cont->dirs && !cont->is_root)
+			printf("\n");
 	}
-	while (cont->dirs)
+	dir = cont->dirs;
+	while (dir)
 	{
-		sort_print(cont->dirs->cont, fl);
-		cont->dirs = cont->dirs->next;
+		sort_print(dir->cont, fl, ac);
+		dir = dir->next;
+		if (dir)
+			printf("\n");
 	}
+//	free_cont(&cont);
 }
 
 int		main(int argc, char **argv)
@@ -51,6 +58,6 @@ int		main(int argc, char **argv)
 	}
 	else
 		cont = create_cont("./", fl, 1);
-	sort_print(cont, fl);
+	sort_print(cont, fl, argc);
 	return (0);
 }
