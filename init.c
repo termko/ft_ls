@@ -96,7 +96,7 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 	cont->dir_num = 0;
 	cont->fil_num = 0;
 	cont->num = 0;
-	get_num_of_files(cont, fl.a);
+	get_num_of_files(cont, fl);
 	fill_files_from_path(cont, fl);
 	fill_fileaddr(cont);
 	return (cont);

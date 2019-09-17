@@ -69,7 +69,7 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 	i = 0;
 	head = cont->files;
 	while ((dir = readdir(d)) && cont->num)
-		if (dir->d_name[0] != '.' || fl.a)
+		if (dir->d_name && (dir->d_name[0] != '.' || fl.a))
 		{
 			if (!head)
 			{
@@ -104,7 +104,7 @@ int in_which_inter(int max_len)
     return (max_len);
 }
 
-void	get_num_of_files(t_cont *cont, int fl_a)
+void	get_num_of_files(t_cont *cont, t_fl fl)
 {
 	DIR				*d;
     unsigned int	len;
@@ -117,11 +117,12 @@ void	get_num_of_files(t_cont *cont, int fl_a)
     if (!(d = opendir(cont->name)))
 		return ;
 	while ((dir = readdir(d)))
-		if (dir->d_name[0] != '.' || fl_a)
+		if (dir->d_name && (dir->d_name[0] != '.' || fl_a))
 		{
 			len = ft_strlen(dir->d_name);
            	cont->mlen = len > cont->mlen ? len : cont->mlen;
 			cont->fil_num += is_file(dir->d_name) ? 1: 0;
+			
 			ret++;
 		}
 	closedir(d);

@@ -71,6 +71,9 @@ typedef struct	s_cont
 	int	own_len;
 	int	grp_len;
 	int	size_len;
+	int	lin;
+	int	col;
+	char	**ret;
 	int	num;
 	int	fil_num;
 	int	dir_num;
@@ -116,11 +119,14 @@ int		sort_rev(t_fil *a, t_fil *b);
 
 //------------------fill.c
 void	fill_files_from_path(t_cont *cont, t_fl fl);
-void	get_num_of_files(t_cont *cont, int fl_a);
+void	get_num_of_files(t_cont *cont, t_fl fl);
 
 //------------------utils.c
 void	check_malloc(void *addr);
 void	fill_fileaddr(t_cont *cont);
+
+//------------------column.c
+void	normal_print(t_cont *cont);
 
 //------------------print.c
 void	print_master(t_cont *cont, t_fl fl, int ac);

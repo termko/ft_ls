@@ -134,11 +134,6 @@ void	detail_print(t_cont *cont)
 	}
 }
 
-void	normal_print(t_cont *cont, t_fil *file)
-{
-	// CODE WITHOUT FLAGS TO PRINT
-}
-
 void	onestr_print(t_cont *cont)
 {
 	int i;
@@ -153,7 +148,7 @@ void	onestr_print(t_cont *cont)
 
 void	print_master(t_cont *cont, t_fl fl, int ac)
 {
-	void	(*print)(t_cont *cont, t_fil *file);
+	void	(*print)(t_cont *cont);
 
 	if (fl.l)
 		print = detail_print;

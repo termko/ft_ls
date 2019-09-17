@@ -21,8 +21,10 @@ void	free_cont(t_cont **cont)
 {
 	t_dirs	*tmpdir;
 	t_fil	*tmpfile;
+	int	i;
 
-	while ((*cont)->dirs)
+	tmpdir = (*cont)->dirs;
+	while (tmpdir)
 	{
 		tmpdir = (*cont)->dirs->next;
 		free_dir((&(*cont)->dirs));
@@ -33,6 +35,12 @@ void	free_cont(t_cont **cont)
 		tmpfile = (*cont)->files->next;
 		free_file((&(*cont)->files));
 		(*cont)->files = tmpfile;
+	}
+	i = 0;
+	while ((*cont)->faddr[i])
+	{
+		free((*cont)->faddr[i]);
+		i++;
 	}
 	free((*cont)->faddr);
 	free((*cont)->name);

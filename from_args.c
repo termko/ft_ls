@@ -68,6 +68,7 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 	cont->is_root = 1;
 	cont->fil_num = 0;
 	cont->dir_num = 0;
+	cont->mlen = 0;
 	i = 0;
 	while (i < ac)
 	{
@@ -83,6 +84,7 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 		{
 			put_file(cont, av[i], stat);
 			cont->fil_num++;
+			cont->mlen = (cont->mlen > ft_strlen(av[i]) ? cont->mlen : ft_strlen(av[i]));
 		}
 		i++;
 	}

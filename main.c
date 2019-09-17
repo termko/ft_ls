@@ -27,7 +27,10 @@ void		sort_print(t_cont *cont, t_fl fl, int ac)
 		while (cont->faddr[i])
 		{
 			if (S_ISDIR(cont->faddr[i]->stat.st_mode))
+			{
+				printf("CREATE FOLDER %s\n", cont->faddr[i]->full_path);
 				create_dir(cont, cont->faddr[i]->full_path, fl, 0);
+			}
 			i++;
 		}
 		if (cont->dirs && !cont->is_root)
