@@ -117,7 +117,7 @@ void	get_num_of_files(t_cont *cont, t_fl fl)
     if (!(d = opendir(cont->name)))
 		return ;
 	while ((dir = readdir(d)))
-		if (dir->d_name && (dir->d_name[0] != '.' || fl_a))
+		if (dir->d_name && (dir->d_name[0] != '.' || fl.a))
 		{
 			len = ft_strlen(dir->d_name);
            	cont->mlen = len > cont->mlen ? len : cont->mlen;
