@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 20:28:08 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/09 08:26:51 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/18 19:28:15 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,11 @@ void	sort_master(t_cont *cont, t_fl fl)
 		j = i;
 		while (cont->faddr[j])
 		{
-			if ((res = sort(cont->faddr[i], cont->faddr[j])) > 0)
-				change_faddr(&cont->faddr[i], &cont->faddr[j], fl.r, res);
+			if (cont->faddr[i]->name && cont->faddr[j]->name)
+			{
+				if ((res = sort(cont->faddr[i], cont->faddr[j])) > 0)
+					change_faddr(&cont->faddr[i], &cont->faddr[j], fl.r, res);
+			}
 			j++;
 		}
 		i++;
