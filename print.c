@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:08:07 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/09 09:26:48 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/18 17:26:00 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ void	detail_print(t_cont *cont)
 		print_type(file->stat.st_mode);
 		print_permissions(file->stat.st_mode);
 //		print_xattr(file->full_path);
-		printf(" %*lu ", cont->link_len, file->stat.st_nlink);
+		printf(" %*hu ", cont->link_len, file->stat.st_nlink);
 		print_owngroup(file, cont);
-		printf(" %*ld", cont->size_len, file->stat.st_size);
+		printf(" %*lld", cont->size_len, file->stat.st_size);
 		print_time(file->stat);
 		printf(" %s", file->name);
 		print_link(file);

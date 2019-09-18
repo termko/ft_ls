@@ -1,34 +1,19 @@
 #include "ft_ls.h"
 
-void	set_details(t_cont *cont, t_fl fl)
+void	set_details(t_fil *file, t_fl fl)
 {
 	struct stat		fst;
 	struct group	*grp;
 	struct passwd	*tf;
-	t_fil		*file;
 
-	file = cont->files;
-	while (file)
-	{
-		if (!lstat(file->full_path, &file->stat))
-		{
-			if (!(grp = getgrgid(file->stat.st_gid)))
-				file->group = NULL;
-			else
-				file->group = ft_strdup(grp->gr_name);
-			if (!(tf = getpwuid(file->stat.st_uid)))
-				file->owner = NULL;
-			else
-				file->owner = ft_strdup(tf->pw_name);
-		}
-/*
-		if (fl.up_r && S_ISDIR(file->stat.st_mode))
-			create_dir(cont, file->full_path, fl, 0);
-*/
-		if (!file->owner || !file->group)
-			printf("ERROR LSTAT\n");
-		file = file->next;
-	}
+	file->group = NULL;
+	file->owner = NULL;
+	if ((grp = getgrgid(file->stat.st_gid)))
+		file->group = ft_strdup(grp->gr_name);
+	if ((tf = getpwuid(file->stat.st_uid)))
+		file->owner = ft_strdup(tf->pw_name);
+	if (!file->owner || !file->group)
+		printf("ERROR LSTAT\n");
 }
 
 char	*set_fullname(char *fold, char *file)
@@ -55,44 +40,6 @@ char	*set_fullname(char *fold, char *file)
 	return (ret);
 }
 
-void	fill_files_from_path(t_cont *cont, t_fl fl)
-{
-	DIR				*d;
-	t_fil			*head;
-    struct dirent	*dir;
-	int				i;
-	int				len;
-
-	if (!(cont->files = (t_fil*)malloc(sizeof(t_fil)))
-		|| !(d = opendir(cont->name)))
-		return ;
-	i = 0;
-	head = cont->files;
-	while ((dir = readdir(d)) && cont->num)
-		if (dir->d_name && (dir->d_name[0] != '.' || fl.a))
-		{
-			if (!head)
-			{
-				ft_putendl("Unexpected error with malloc! Exiting...");
-				exit(1);
-			}
-			i++;
-			head->full_path = set_fullname(cont->name, dir->d_name);
-			head->name = ft_strdup(dir->d_name);
-			head->is_dir = (is_file(head->full_path) ? 0 : 1);
-			head->next = i < cont->num ?
-				(t_fil*)malloc(sizeof(t_fil)) : NULL;
-			head = head->next;
-		}
-	closedir(d);
-	if (!i)
-	{
-		free(cont->files);
-		cont->files = NULL;
-	}
-	set_details(cont, fl);
-}
-
 int in_which_inter(int max_len)
 {
 	int plus_8;
@@ -103,6 +50,70 @@ int in_which_inter(int max_len)
 	max_len = plus_8;
     return (max_len);
 }
+
+void	fill_files_from_path(t_cont *cont, t_fl fl)
+{
+	DIR				*d;
+	t_fil			*head;
+    struct dirent	*dir;
+	int				i;
+	int				flag;
+
+	cont->mlen = 0;
+	cont->fil_num = 0;
+	if (!(cont->files = (t_fil*)malloc(sizeof(t_fil)))
+		|| !(d = opendir(cont->name)))
+		return ;
+	i = 0;
+	flag = 0;
+	head = cont->files;
+	while ((dir = readdir(d)))
+		if (dir->d_name[0] != '.' || fl.a)
+		{
+			if (!head)
+			{
+				ft_putendl("Unexpected error with malloc! Exiting...");
+				exit(1);
+			}
+			if (i && !flag)
+			{
+				check_malloc(head->next = (t_fil*)malloc(sizeof(t_fil)));
+				head = head->next;
+			}
+			flag = 0;
+			i++;
+			head->full_path = set_fullname(cont->name, dir->d_name);
+			if (lstat(head->full_path, &head->stat))
+			{
+//				free(tmp);
+				free(head->full_path);
+				flag = 1;
+				continue ;
+			}
+			head->name = ft_strdup(dir->d_name);
+			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
+			cont->fil_num += (is_file(dir->d_name) ? 1 : 0);
+			head->is_dir = (is_file(head->full_path) ? 0 : 1);
+			set_details(head, fl);
+			head->next = NULL;
+			/*
+			head->next = i < cont->num ?
+				(t_fil*)malloc(sizeof(t_fil)) : NULL;
+			head = head->next;
+//			free(tmp);
+			*/
+		}
+	cont->mlen = in_which_inter(cont->mlen);
+	cont->dir_num = i - cont->fil_num;
+	cont->num = i;
+	closedir(d);
+	if (!i)
+	{
+		free(cont->files);
+		cont->files = NULL;
+	}
+}
+
 
 void	get_num_of_files(t_cont *cont, t_fl fl)
 {
@@ -118,13 +129,12 @@ void	get_num_of_files(t_cont *cont, t_fl fl)
 		return ;
 	while ((dir = readdir(d)))
 	{
-		if (dir->d_name && (dir->d_name[0] != '.' || fl.a))
+		if (dir->d_name[0] != '.' || fl.a)
 		{
 			len = ft_strlen(dir->d_name);
            	cont->mlen = len > cont->mlen ? len : cont->mlen;
 			cont->fil_num += (is_file(dir->d_name) ? 1: 0);
 			ret++;
-			printf("%s\n", dir->d_name);
 		}
 	}
 	closedir(d);

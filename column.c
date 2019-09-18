@@ -108,5 +108,10 @@ void normal_print(t_cont *cont)
 		return ;
 	get_structured(cont);
 	while (cont->ret[i])
-		printf("%s\n", cont->ret[i++]);
+	{
+		printf("%s\n", cont->ret[i]);
+		free(cont->ret[i]);
+		i++;
+	}
+	free(cont->ret);
 }

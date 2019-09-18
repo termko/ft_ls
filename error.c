@@ -8,7 +8,6 @@ void	illegal_opt(char c)
 
 
 
-//00000------------------------------------------------
 void	print_flags(t_fl *fl)
 {
 	printf("FLAGS:\n");
@@ -55,12 +54,12 @@ void	print_info(t_fil *file)
 		printf("%s:\n", file->name);
 		printf("mod time: %ld\n", file->stat.st_mtime);
 		printf("mode: %d\n", file->stat.st_mode);
-		printf("link: %lu\n", file->stat.st_nlink);
+		printf("link: %hu\n", file->stat.st_nlink);
 		printf("uid: %d\n", file->stat.st_uid);
 		printf("gid: %d\n", file->stat.st_gid);
-		printf("size: %ld\n", file->stat.st_size);
-		printf("blocks: %ld\n", file->stat.st_blocks);
-		printf("rdev: %lu\n", file->stat.st_rdev);
+		printf("size: %lld\n", file->stat.st_size);
+		printf("blocks: %lld\n", file->stat.st_blocks);
+		printf("rdev: %d\n", file->stat.st_rdev);
 		// exit(0);
 		printf("\n\n");
 		file = file->next;

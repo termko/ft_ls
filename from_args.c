@@ -6,36 +6,42 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 15:41:36 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/18 18:54:32 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	fill_file(t_fil *file, char *name, struct stat stat)
+int		fill_file(t_fil *file, char *name, struct stat stat)
 {
 	struct group	*grp;
 	struct passwd	*tf;
 
 	file->name = ft_strdup(name);
-	lstat(file->name, &file->stat);
+	if (lstat(file->name, &file->stat))
+	{
+		printf("error lstat!\n");
+		return (-1);
+	}
 	if (S_ISDIR(stat.st_mode))
 	{
 		file->is_dir = 1;
-		return ;
+		return (0);
 	}
 	file->is_dir = 0;
 	grp = getgrgid(file->stat.st_gid);
 	file->group = ft_strdup(grp->gr_name);
 	tf = getpwuid(file->stat.st_uid);
 	file->owner = ft_strdup(tf->pw_name);
-	file->full_path = file->name;
+	file->full_path = ft_strdup(file->name);
 	file->next = NULL;
+	return (0);
 }
 
 void	put_file(t_cont *cont, char *name, struct stat stat)
 {
 	t_fil *file;
+	t_fil *tmp;
 
 	if (!cont->files)
 	{
@@ -50,7 +56,19 @@ void	put_file(t_cont *cont, char *name, struct stat stat)
 		check_malloc(file->next = (t_fil*)malloc(sizeof(t_fil)));
 		file = file->next;
 	}
-	fill_file(file, name, stat);
+	if (fill_file(file, name, stat))
+	{
+		if (file == cont->files)
+		{
+			free_file(&(cont->files));
+			cont->files = NULL;
+		}
+		tmp = cont->files;
+		while (tmp->next != file)
+			tmp = tmp->next;
+		free_file(tmp->next);
+		tmp->next = NULL;
+	}
 }
 
 t_cont	*set_path(int ac, char **av, t_fl fl)
@@ -88,6 +106,7 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 		}
 		i++;
 	}
+	cont->mlen = in_which_inter(cont->mlen);
 	cont->dir_num = i - cont->fil_num;
 	cont->num = i;
 	fill_fileaddr(cont);

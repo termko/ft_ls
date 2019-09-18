@@ -97,7 +97,7 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 	cont->dir_num = 0;
 	cont->fil_num = 0;
 	cont->num = 0;
-	get_num_of_files(cont, fl);
+//	get_num_of_files(cont, fl);
 	fill_files_from_path(cont, fl);
 	fill_fileaddr(cont);
 	return (cont);
@@ -129,6 +129,7 @@ void	set_max_len(t_cont *cont)
 {
 	t_fil	*head;
 	long	tmp_len;
+	char	*tmp;
 
 	head = cont->files;
 	cont->total = 0;
@@ -139,13 +140,23 @@ void	set_max_len(t_cont *cont)
 	while (head)
 	{
 		cont->total += head->stat.st_blocks;
-		tmp_len = ft_strlen(ft_intmaxtoa(head->stat.st_nlink, 10));
+		tmp = ft_intmaxtoa(head->stat.st_nlink, 10);
+		tmp_len = ft_strlen(tmp);
+		free(tmp);
 		cont->link_len = tmp_len > cont->link_len ? tmp_len : cont->link_len;
-		tmp_len = ft_strlen(head->owner);
-		cont->own_len = tmp_len > cont->own_len ? tmp_len : cont->own_len;
-		tmp_len = ft_strlen(head->group);
-		cont->grp_len = tmp_len > cont->grp_len ? tmp_len : cont->grp_len;
-		tmp_len = ft_strlen(ft_intmaxtoa(head->stat.st_size, 10));
+		if (head->owner)
+		{
+			tmp_len = ft_strlen(head->owner);
+			cont->own_len = tmp_len > cont->own_len ? tmp_len : cont->own_len;
+		}
+		if (head->group)
+		{
+			tmp_len = ft_strlen(head->group);
+			cont->grp_len = tmp_len > cont->grp_len ? tmp_len : cont->grp_len;
+		}
+		tmp = ft_intmaxtoa(head->stat.st_size, 10);
+		tmp_len = ft_strlen(tmp);
+		free(tmp);
 		cont->size_len = tmp_len > cont->size_len ? tmp_len : cont->size_len;
 		head = head->next;
 	}

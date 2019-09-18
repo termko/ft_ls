@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:07:57 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 15:47:51 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/18 16:37:36 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		sort_print(t_cont *cont, t_fl fl, int ac)
 		if (dir)
 			printf("\n");
 	}
-//	free_cont(&cont);
+	free_cont(&cont);
 }
 
 int		main(int argc, char **argv)
