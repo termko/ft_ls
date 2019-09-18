@@ -62,7 +62,7 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 	cont->mlen = 0;
 	cont->fil_num = 0;
 	if (!(cont->files = (t_fil*)malloc(sizeof(t_fil)))
-		|| !(d = opendir(cont->name)))
+		|| !(d = opendir(cont->name))) // PERROR (STRERROR)
 		return ;
 	i = 0;
 	flag = 0;
@@ -83,7 +83,7 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 			flag = 0;
 			i++;
 			head->full_path = set_fullname(cont->name, dir->d_name);
-			if (lstat(head->full_path, &head->stat))
+			if (lstat(head->full_path, &head->stat)) // PERROR
 			{
 //				free(tmp);
 				free(head->full_path);
@@ -94,6 +94,8 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
 			cont->fil_num += (is_file(dir->d_name) ? 1 : 0);
 			head->is_dir = (is_file(head->full_path) ? 0 : 1);
+			if (head->is_dir)
+				printf("%s\n", head->full_path;
 			set_details(head, fl);
 			head->next = NULL;
 			/*
@@ -125,7 +127,7 @@ void	get_num_of_files(t_cont *cont, t_fl fl)
     cont->mlen = 0;
 	cont->fil_num = 0;
 	ret = 0;
-    if (!(d = opendir(cont->name)))
+    if (!(d = opendir(cont->name))) // PERROR (STRERROR)
 		return ;
 	while ((dir = readdir(d)))
 	{

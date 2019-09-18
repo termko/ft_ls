@@ -4,8 +4,8 @@ int		is_file(char *path)
 {
     struct stat		path_stat;
 
-	stat(path, &path_stat);
-	return (S_ISREG(path_stat.st_mode));
+	lstat(path, &path_stat);
+	return (!S_ISDIR(path_stat.st_mode));
 }
 
 // void	check_if_files_exist(char **av)
