@@ -85,6 +85,7 @@ void		init_fl(int *ac, char ***av, t_fl *fl)
 t_cont	*create_cont(char *path, t_fl fl, int is_root)
 {
 	t_cont	*cont;
+	t_fil	*tmp;
 
 	if (!(cont = (t_cont*)malloc(sizeof(t_cont))))
 		return (NULL);

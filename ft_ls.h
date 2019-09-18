@@ -130,4 +130,7 @@ void	normal_print(t_cont *cont);
 
 //------------------print.c
 void	print_master(t_cont *cont, t_fl fl, int ac);
+
+//------------------free.c
+void	free_cont(t_cont **cont);
 #endif

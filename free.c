@@ -3,7 +3,7 @@
 void	free_dir(t_dirs **dir)
 {
 	free((*dir)->name);
-	free_cont((*dir)->cont);
+	free_cont(&((*dir)->cont));
 }
 
 void	free_file(t_fil **file)

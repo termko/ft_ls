@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:07:57 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/09 07:34:12 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/18 15:47:51 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void		sort_print(t_cont *cont, t_fl fl, int ac)
 		{
 			if (S_ISDIR(cont->faddr[i]->stat.st_mode))
 			{
-				printf("CREATE FOLDER %s\n", cont->faddr[i]->full_path);
 				create_dir(cont, cont->faddr[i]->full_path, fl, 0);
 			}
 			i++;

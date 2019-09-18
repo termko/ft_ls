@@ -103,10 +103,9 @@ void normal_print(t_cont *cont)
 	int j;
 	// char **ret;
 
-	if (!cont->num)
-		return ;
 	i = 0;
-	get_size(cont);	
+	if (!get_size(cont))
+		return ;
 	get_structured(cont);
 	while (cont->ret[i])
 		printf("%s\n", cont->ret[i++]);

@@ -84,12 +84,12 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 				(t_fil*)malloc(sizeof(t_fil)) : NULL;
 			head = head->next;
 		}
+	closedir(d);
 	if (!i)
 	{
 		free(cont->files);
 		cont->files = NULL;
 	}
-	closedir(d);
 	set_details(cont, fl);
 }
 
@@ -117,14 +117,16 @@ void	get_num_of_files(t_cont *cont, t_fl fl)
     if (!(d = opendir(cont->name)))
 		return ;
 	while ((dir = readdir(d)))
+	{
 		if (dir->d_name && (dir->d_name[0] != '.' || fl.a))
 		{
 			len = ft_strlen(dir->d_name);
            	cont->mlen = len > cont->mlen ? len : cont->mlen;
-			cont->fil_num += is_file(dir->d_name) ? 1: 0;
-			
+			cont->fil_num += (is_file(dir->d_name) ? 1: 0);
 			ret++;
+			printf("%s\n", dir->d_name);
 		}
+	}
 	closedir(d);
 	cont->mlen = in_which_inter(cont->mlen);
 	cont->dir_num = ret - cont->fil_num;
