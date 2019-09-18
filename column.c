@@ -69,16 +69,19 @@ void concat_filenames(char *to, char *name, int max_len, int full_len)
 	char *name;
 
 	check_malloc(cont->ret = (char**)malloc(sizeof(char*) * (cont->lin + 1)));
-	i = -1;
-	while (++i < cont->lin)
-		check_malloc(cont->ret[i] = ft_strnew(cont->mlen * cont->col));
-	cont->ret[i] = NULL;
-	i = -1;
-	while (++i < cont->lin)
+	i = 0;
+	while (i < cont->lin)
 	{
-		j = -1;
+		check_malloc(cont->ret[i] = ft_strnew(cont->mlen * cont->col));
+		i++;
+	}
+	cont->ret[i] = NULL;
+	i = 0;
+	while (i < cont->lin)
+	{
+		j = 0;
 		num = i;
-		while (++j < cont->col)
+		while (j < cont->col)
 		{
 			if (num < cont->num)
 				name = cont->faddr[num]->name;
@@ -91,7 +94,9 @@ void concat_filenames(char *to, char *name, int max_len, int full_len)
 				concat_filenames(cont->ret[i], name, cont->mlen * (j + 1),
 				cont->mlen * cont->col);
 			num += cont->lin;
+			j++;
 		}
+		i++;
 	}
 // printf("ret[0] = %s\n", cont->ret[0]);
 // return (ret);

@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 18:54:32 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/18 19:14:11 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	put_file(t_cont *cont, char *name, struct stat stat)
 		tmp = cont->files;
 		while (tmp->next != file)
 			tmp = tmp->next;
-		free_file(tmp->next);
+		free_file(&(tmp->next));
 		tmp->next = NULL;
 	}
 }
@@ -108,7 +108,7 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 	}
 	cont->mlen = in_which_inter(cont->mlen);
 	cont->dir_num = i - cont->fil_num;
-	cont->num = i;
+	cont->num = cont->fil_num;
 	fill_fileaddr(cont);
 	return (cont);
 }

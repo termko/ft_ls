@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:07:57 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 16:37:36 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/18 19:21:48 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,16 @@ void		sort_print(t_cont *cont, t_fl fl, int ac)
 		{
 			if (S_ISDIR(cont->faddr[i]->stat.st_mode))
 			{
-				create_dir(cont, cont->faddr[i]->full_path, fl, 0);
+				if (cont->faddr[i]->name &&
+						ft_strcmp(cont->faddr[i]->name, ".") &&
+						ft_strcmp(cont->faddr[i]->name, ".."))
+					create_dir(cont, cont->faddr[i]->full_path, fl, 0);
 			}
 			i++;
 		}
-		if (cont->dirs && !cont->is_root)
-			printf("\n");
 	}
+	if (cont->dirs && (!cont->is_root || cont->from_av))
+		printf("\n");
 	dir = cont->dirs;
 	while (dir)
 	{

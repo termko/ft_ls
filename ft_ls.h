@@ -135,4 +135,5 @@ void	print_master(t_cont *cont, t_fl fl, int ac);
 
 //------------------free.c
 void	free_cont(t_cont **cont);
+void	free_file(t_fil **file);
 #endif

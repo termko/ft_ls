@@ -7,7 +7,7 @@ void	free_dir(t_dirs **dir)
 	free(*dir);
 }
 
-void	free_file(t_fil **file, int av)
+void	free_file(t_fil **file)
 {
 	if ((*file)->full_path)
 		free((*file)->full_path);
@@ -43,7 +43,7 @@ void	free_cont(t_cont **cont)
 	while ((*cont)->files)
 	{
 		tmpfile = (*cont)->files->next;
-		free_file(&((*cont)->files), (*cont)->from_av);
+		free_file(&((*cont)->files));
 		(*cont)->files = tmpfile;
 	}
 	while ((*cont)->dirs)
