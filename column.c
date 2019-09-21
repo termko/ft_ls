@@ -24,27 +24,6 @@ int get_size(t_cont *cont)
 	return (1);
 }
 
-// char *return_filename_list(t_fil *file, int count)
-// {
-// int i;
-
-// if (!file)
-// return (NULL);
-// i = 0;
-// while (file && i < count)
-
-// {
-
-// i++;
-
-// file = file->next;
-
-// }
-
-// return (file->name);
-
-// }
-
 void concat_filenames(char *to, char *name, int max_len, int full_len)
 {
 	int i;
@@ -60,7 +39,7 @@ void concat_filenames(char *to, char *name, int max_len, int full_len)
 	to[i] = '\0';
 }
 
-/*char ***/void get_structured(t_cont *cont)
+void get_structured(t_cont *cont)
 {
 	int i;
 	int j;
@@ -87,9 +66,6 @@ void concat_filenames(char *to, char *name, int max_len, int full_len)
 				name = cont->faddr[num]->name;
 			else
 				name = NULL;
-			// return_filename_list(cont->files, num);
-			// printf("name = %s\n", name);
-			// printf("mlen = %d\n", cont->mlen * (j + 1));
 			if (name)
 				concat_filenames(cont->ret[i], name, cont->mlen * (j + 1),
 				cont->mlen * cont->col);
@@ -98,15 +74,12 @@ void concat_filenames(char *to, char *name, int max_len, int full_len)
 		}
 		i++;
 	}
-// printf("ret[0] = %s\n", cont->ret[0]);
-// return (ret);
 }
 
 void normal_print(t_cont *cont)
 {
 	int i;
 	int j;
-	// char **ret;
 
 	i = 0;
 	if (!get_size(cont))

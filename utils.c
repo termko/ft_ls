@@ -15,10 +15,13 @@
 void	check_malloc(void *addr)
 {
 	if (!addr)
-	{
-		ft_putendl("Unexpected error with malloc! Exiting...");
-		exit(1);
-	}
+		error_exit("Unexpected error with malloc! Exiting...\n");
+}
+
+void	error_exit(char *err)
+{
+	write(2, err, ft_strlen(err));
+	exit(1);
 }
 
 void	fill_fileaddr(t_cont *cont)

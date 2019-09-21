@@ -17,23 +17,31 @@ int		fill_file(t_fil *file, char *name, struct stat stat)
 	struct group	*grp;
 	struct passwd	*tf;
 
-	file->name = ft_strdup(name);
+	check_malloc(file->name = ft_strdup(name));
 	if (lstat(file->name, &file->stat))
 	{
-		printf("error lstat!\n");
+		perror(file->name);
 		return (-1);
 	}
+	file->group = NULL;
+	file->owner = NULL;
+	if (grp = getgrgid(file->stat.st_gid))
+		check_malloc(file->group = ft_strdup(grp->gr_name));
+	else
+		perror(file->name);
+	if (tf = getpwuid(file->stat.st_uid))
+		check_malloc(file->owner = ft_strdup(tf->pw_name));
+	else
+		perror(file->name);
+	if (!file->group || !file->owner)
+		return (-1);
 	if (S_ISDIR(stat.st_mode))
 	{
 		file->is_dir = 1;
 		return (0);
 	}
 	file->is_dir = 0;
-	grp = getgrgid(file->stat.st_gid);
-	file->group = ft_strdup(grp->gr_name);
-	tf = getpwuid(file->stat.st_uid);
-	file->owner = ft_strdup(tf->pw_name);
-	file->full_path = ft_strdup(file->name);
+	check_malloc(file->full_path = ft_strdup(file->name));
 	file->next = NULL;
 	return (0);
 }
@@ -92,7 +100,7 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 	{
 		if (lstat(av[i], &stat))
 		{
-			printf("ls: %s: No such file or directory\n", av[i]); // TODO: ERRNO STRERR
+			perror(av[i]);
 			i++;
 			continue ;
 		}

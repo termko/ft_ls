@@ -97,6 +97,7 @@ typedef struct	s_prl
 void	illegal_opt(char c);
 void	print_flags(t_fl *fl);
 void	print_args(char **av, int ac);
+void	error_exit(char *err);
 
 //-----------------init.c
 int		fill_opt(t_fl *fl, char *arg);

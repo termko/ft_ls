@@ -3,37 +3,16 @@
 int		is_file(char *path)
 {
     struct stat		path_stat;
+	int i;
 
-	lstat(path, &path_stat);
+	if ((i = lstat(path, &path_stat)))
+	{
+		printf("%d\n", i);
+		perror(path);
+		return (-1);
+	}
 	return (!S_ISDIR(path_stat.st_mode));
 }
-
-// void	check_if_files_exist(char **av)
-// {
-// 	FILE	*file;
-// 	DIR		*dir;
-// 	int		i;
-
-// 	i = -1;
-// 	while (av && av[++i])
-// 		if (is_file(av[i]))
-// 		{
-// 			if ((file = fopen(av[i], "r")))
-// 				fclose(file);
-// 			else if ((dir = opendir(av[i])))
-// 				closedir(dir);
-// 			else
-// 			{
-// 				printf("ls: %s: No such file or directory\n", av[i]);
-// 				exit(1);
-// 			}
-// 		}
-// 		else
-// 		{
-// 			printf("ls: %s: No such file or directory\n", av[i]);
-// 			exit(1);
-// 		}
-// }
 
 int		fill_opt(t_fl *fl, char *arg)
 {

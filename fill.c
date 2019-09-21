@@ -10,10 +10,12 @@ void	set_details(t_fil *file, t_fl fl)
 	file->owner = NULL;
 	if ((grp = getgrgid(file->stat.st_gid)))
 		file->group = ft_strdup(grp->gr_name);
+	else
+		perror(file->full_path);
 	if ((tf = getpwuid(file->stat.st_uid)))
 		file->owner = ft_strdup(tf->pw_name);
-	if (!file->owner || !file->group)
-		printf("ERROR LSTAT\n");
+	else
+		perror(file->full_path);
 }
 
 char	*set_fullname(char *fold, char *file)
@@ -61,9 +63,13 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 
 	cont->mlen = 0;
 	cont->fil_num = 0;
-	if (!(cont->files = (t_fil*)malloc(sizeof(t_fil)))
-		|| !(d = opendir(cont->name))) // PERROR (STRERROR)
-		return ;
+	cont->dir_num = 0;
+	check_malloc(cont->files = (t_fil*)malloc(sizeof(t_fil)));
+	if (!(d = opendir(cont->name)))
+	{
+		perror("ls");
+		exit(1);
+	}
 	i = 0;
 	flag = 0;
 	head = cont->files;
@@ -71,10 +77,7 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 		if (dir->d_name[0] != '.' || fl.a)
 		{
 			if (!head)
-			{
-				ft_putendl("Unexpected error with malloc! Exiting...");
-				exit(1);
-			}
+				error_exit("Unexpected error with malloc! Exiting...\n");
 			if (i && !flag)
 			{
 				check_malloc(head->next = (t_fil*)malloc(sizeof(t_fil)));
@@ -83,30 +86,22 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 			flag = 0;
 			i++;
 			head->full_path = set_fullname(cont->name, dir->d_name);
-			if (lstat(head->full_path, &head->stat)) // PERROR
+			if (lstat(head->full_path, &head->stat))
 			{
-//				free(tmp);
 				free(head->full_path);
 				flag = 1;
 				continue ;
 			}
-			head->name = ft_strdup(dir->d_name);
+			check_malloc(head->name = ft_strdup(dir->d_name));
 			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
-			cont->fil_num += (is_file(dir->d_name) ? 1 : 0);
+			cont->fil_num += (is_file(head->full_path) ? 1 : 0);
 			head->is_dir = (is_file(head->full_path) ? 0 : 1);
 			if (head->is_dir)
-				printf("%s\n", head->full_path;
+				cont->dir_num++;
 			set_details(head, fl);
 			head->next = NULL;
-			/*
-			head->next = i < cont->num ?
-				(t_fil*)malloc(sizeof(t_fil)) : NULL;
-			head = head->next;
-//			free(tmp);
-			*/
 		}
 	cont->mlen = in_which_inter(cont->mlen);
-	cont->dir_num = i - cont->fil_num;
 	cont->num = i;
 	closedir(d);
 	if (!i)
@@ -114,33 +109,4 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 		free(cont->files);
 		cont->files = NULL;
 	}
-}
-
-
-void	get_num_of_files(t_cont *cont, t_fl fl)
-{
-	DIR				*d;
-    unsigned int	len;
-	int				ret;
-    struct dirent	*dir;
-
-    cont->mlen = 0;
-	cont->fil_num = 0;
-	ret = 0;
-    if (!(d = opendir(cont->name))) // PERROR (STRERROR)
-		return ;
-	while ((dir = readdir(d)))
-	{
-		if (dir->d_name[0] != '.' || fl.a)
-		{
-			len = ft_strlen(dir->d_name);
-           	cont->mlen = len > cont->mlen ? len : cont->mlen;
-			cont->fil_num += (is_file(dir->d_name) ? 1: 0);
-			ret++;
-		}
-	}
-	closedir(d);
-	cont->mlen = in_which_inter(cont->mlen);
-	cont->dir_num = ret - cont->fil_num;
-	cont->num = ret;
 }

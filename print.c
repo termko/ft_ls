@@ -159,15 +159,15 @@ void	print_master(t_cont *cont, t_fl fl, int ac)
 	
 	if (!cont->is_root && fl.up_r)
 		printf("%s:\n", cont->name);
+	else if (cont->is_root && !cont->from_av && fl.up_r)
+		printf("%s:\n", cont->name);
 	else if (!cont->is_root && !cont->from_av && ac > 1)
 	{
 		printf("%s:\n", cont->name);
 	}
-
 	if (fl.l && !cont->from_av)
 	{
 		printf("total %ld\n", cont->total);
 	}
-
 	print(cont);
 }

@@ -14,6 +14,7 @@
 
 void		sort_print(t_cont *cont, t_fl fl, int ac)
 {
+	static int	flag = 0;
 	int		i;
 	t_dirs	*dir;
 
@@ -26,7 +27,8 @@ void		sort_print(t_cont *cont, t_fl fl, int ac)
 		i = 0;
 		while (cont->faddr[i])
 		{
-			if (S_ISDIR(cont->faddr[i]->stat.st_mode))
+			if (cont->faddr[i]->is_dir)
+			//if (S_ISDIR(cont->faddr[i]->stat.st_mode))
 			{
 				if (cont->faddr[i]->name &&
 						ft_strcmp(cont->faddr[i]->name, ".") &&
@@ -36,8 +38,16 @@ void		sort_print(t_cont *cont, t_fl fl, int ac)
 			i++;
 		}
 	}
-	if (cont->dirs && (!cont->is_root || cont->from_av))
-		printf("\n");
+	if (cont->dirs)
+	{
+		if (!cont->name && cont->files)
+			printf("\n");
+		else if (cont->name && !ft_strcmp(cont->name, "."))
+			printf("\n");
+		else if (flag)
+			printf("\n");
+	}
+	flag = 1;
 	dir = cont->dirs;
 	while (dir)
 	{
@@ -62,7 +72,7 @@ int		main(int argc, char **argv)
 		cont = set_path(argc, argv, fl);
 	}
 	else
-		cont = create_cont("./", fl, 1);
+		cont = create_cont(".", fl, 1);
 	sort_print(cont, fl, argc);
 	return (0);
 }

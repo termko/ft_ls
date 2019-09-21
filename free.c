@@ -19,22 +19,7 @@ void	free_file(t_fil **file)
 		free((*file)->owner);
 	free(*file);
 }
-/*
-void	free_ret(char ***ret)
-{
-	int i;
 
-	i = 0;
-	while ((*ret)[i])
-	{
-	//	printf("%s\n", (*ret)[i]);
-		free((*ret)[i]);
-		i++;
-	}
-	free(*ret);
-//	free((*cont)->ret);
-}
-*/
 void	free_cont(t_cont **cont)
 {
 	t_fil	*tmpfile;
@@ -54,8 +39,6 @@ void	free_cont(t_cont **cont)
 	}
 	if ((*cont)->name)
 		free((*cont)->name);
-//	if ((*cont)->ret)
-//		free_ret(&((*cont)->ret));
 	if ((*cont)->faddr)
 		free((*cont)->faddr);
 	free(*cont);
