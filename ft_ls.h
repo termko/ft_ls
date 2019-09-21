@@ -119,7 +119,7 @@ int		sort_standart(t_fil *a, t_fil *b);
 int		sort_rev(t_fil *a, t_fil *b);
 
 //------------------fill.c
-void	fill_files_from_path(t_cont *cont, t_fl fl);
+int	fill_files_from_path(t_cont *cont, t_fl fl);
 void	get_num_of_files(t_cont *cont, t_fl fl);
 int		in_which_inter(int max_len);
 

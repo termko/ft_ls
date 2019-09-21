@@ -28,7 +28,6 @@ void		sort_print(t_cont *cont, t_fl fl, int ac)
 		while (cont->faddr[i])
 		{
 			if (cont->faddr[i]->is_dir)
-			//if (S_ISDIR(cont->faddr[i]->stat.st_mode))
 			{
 				if (cont->faddr[i]->name &&
 						ft_strcmp(cont->faddr[i]->name, ".") &&
@@ -73,6 +72,8 @@ int		main(int argc, char **argv)
 	}
 	else
 		cont = create_cont(".", fl, 1);
+	if (!cont)
+		exit(1);
 	sort_print(cont, fl, argc);
 	return (0);
 }

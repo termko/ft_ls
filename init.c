@@ -7,7 +7,6 @@ int		is_file(char *path)
 
 	if ((i = lstat(path, &path_stat)))
 	{
-		printf("%d\n", i);
 		perror(path);
 		return (-1);
 	}
@@ -65,10 +64,10 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 {
 	t_cont	*cont;
 	t_fil	*tmp;
+	int	i;
 
-	if (!(cont = (t_cont*)malloc(sizeof(t_cont))))
-		return (NULL);
-	cont->name = ft_strdup(path);
+	check_malloc(cont = (t_cont*)malloc(sizeof(t_cont)));
+	check_malloc(cont->name = ft_strdup(path));
 	cont->dirs = NULL;
 	cont->files = NULL;
 	cont->is_root = is_root;
@@ -76,8 +75,13 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 	cont->dir_num = 0;
 	cont->fil_num = 0;
 	cont->num = 0;
-//	get_num_of_files(cont, fl);
-	fill_files_from_path(cont, fl);
+	i = fill_files_from_path(cont, fl);
+	if (!cont->files && i < 0)
+	{
+		free(cont->name);
+		free(cont);
+		return (NULL);
+	}
 	fill_fileaddr(cont);
 	return (cont);
 }
@@ -85,23 +89,27 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 void	create_dir(t_cont *cont, char *path, t_fl fl, int is_root)
 {
 	t_dirs *dir;
+	t_dirs *tmp;
 
-	if (!cont->dirs)
+	check_malloc(dir = (t_dirs*)malloc(sizeof(t_dirs)));
+	check_malloc(dir->name = ft_strdup(path));
+	dir->cont = create_cont(path, fl, is_root);
+	if (!(dir->cont))
 	{
-		check_malloc(cont->dirs = (t_dirs*)malloc(sizeof(t_dirs)));
-		dir = cont->dirs;
+		free(dir->name);
+		free(dir);
+		return ;
 	}
+	dir->next = NULL;
+	if (!cont->dirs)
+		cont->dirs = dir;
 	else
 	{
-		dir = cont->dirs;
-		while (dir->next)
-			dir = dir->next;
-		check_malloc(dir->next = (t_dirs*)malloc(sizeof(t_dirs)));
-		dir = dir->next;
+		tmp = cont->dirs;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = dir;
 	}
-	dir->name = ft_strdup(path);
-	dir->cont = create_cont(path, fl, is_root);
-	dir->next = NULL;
 }
 
 void	set_max_len(t_cont *cont)

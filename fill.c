@@ -53,7 +53,7 @@ int in_which_inter(int max_len)
     return (max_len);
 }
 
-void	fill_files_from_path(t_cont *cont, t_fl fl)
+int	fill_files_from_path(t_cont *cont, t_fl fl)
 {
 	DIR				*d;
 	t_fil			*head;
@@ -67,8 +67,9 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 	check_malloc(cont->files = (t_fil*)malloc(sizeof(t_fil)));
 	if (!(d = opendir(cont->name)))
 	{
-		perror("ls");
-		exit(1);
+		perror(cont->name);
+		free(cont->files);
+		return (-1);
 	}
 	i = 0;
 	flag = 0;
@@ -84,11 +85,21 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 				head = head->next;
 			}
 			flag = 0;
-			i++;
 			head->full_path = set_fullname(cont->name, dir->d_name);
 			if (lstat(head->full_path, &head->stat))
 			{
+				printf("ABOUT TO FREE IN LSTAT\n");
 				free(head->full_path);
+				printf("FREED IN LSTAT\n");
+				flag = 1;
+				continue ;
+			}
+			set_details(head, fl);
+			if (!head->group || !head->owner)
+			{
+				printf("ABOUT TO FREE IN GROWN\n");
+				free(head->full_path);
+				printf("FREED IN GROWN\n");
 				flag = 1;
 				continue ;
 			}
@@ -98,9 +109,10 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 			head->is_dir = (is_file(head->full_path) ? 0 : 1);
 			if (head->is_dir)
 				cont->dir_num++;
-			set_details(head, fl);
 			head->next = NULL;
+			i++;
 		}
+//	check_head(&(cont->files)); CHECK FOR LAST ELEM
 	cont->mlen = in_which_inter(cont->mlen);
 	cont->num = i;
 	closedir(d);
@@ -109,4 +121,5 @@ void	fill_files_from_path(t_cont *cont, t_fl fl)
 		free(cont->files);
 		cont->files = NULL;
 	}
+	return (0);
 }
