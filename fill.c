@@ -64,13 +64,13 @@ int	fill_files_from_path(t_cont *cont, t_fl fl)
 	cont->mlen = 0;
 	cont->fil_num = 0;
 	cont->dir_num = 0;
-	check_malloc(cont->files = (t_fil*)malloc(sizeof(t_fil)));
 	if (!(d = opendir(cont->name)))
 	{
 		perror(cont->name);
-		free(cont->files);
+		cont->files = NULL;
 		return (-1);
 	}
+	check_malloc(cont->files = (t_fil*)malloc(sizeof(t_fil)));
 	i = 0;
 	flag = 0;
 	head = cont->files;
@@ -88,18 +88,14 @@ int	fill_files_from_path(t_cont *cont, t_fl fl)
 			head->full_path = set_fullname(cont->name, dir->d_name);
 			if (lstat(head->full_path, &head->stat))
 			{
-				printf("ABOUT TO FREE IN LSTAT\n");
 				free(head->full_path);
-				printf("FREED IN LSTAT\n");
 				flag = 1;
 				continue ;
 			}
 			set_details(head, fl);
 			if (!head->group || !head->owner)
 			{
-				printf("ABOUT TO FREE IN GROWN\n");
 				free(head->full_path);
-				printf("FREED IN GROWN\n");
 				flag = 1;
 				continue ;
 			}

@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 19:14:11 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 02:25:46 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int		fill_file(t_fil *file, char *name, struct stat stat)
 	}
 	file->group = NULL;
 	file->owner = NULL;
-	if (grp = getgrgid(file->stat.st_gid))
+	if ((grp = getgrgid(file->stat.st_gid)))
 		check_malloc(file->group = ft_strdup(grp->gr_name));
 	else
 		perror(file->name);
-	if (tf = getpwuid(file->stat.st_uid))
+	if ((tf = getpwuid(file->stat.st_uid)))
 		check_malloc(file->owner = ft_strdup(tf->pw_name));
 	else
 		perror(file->name);
@@ -82,7 +82,7 @@ void	put_file(t_cont *cont, char *name, struct stat stat)
 t_cont	*set_path(int ac, char **av, t_fl fl)
 {
 	t_cont		*cont;
-	struct stat	stat;
+	struct stat	st;
 	int			i;
 	char		*tmp;
 
@@ -98,17 +98,18 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 	i = 0;
 	while (i < ac)
 	{
-		if (lstat(av[i], &stat))
+		if ((fl.l ? lstat(av[i], &st) : stat(av[i], &st)))
 		{
 			perror(av[i]);
 			i++;
 			continue ;
 		}
-		if (S_ISDIR(stat.st_mode))
+		printf("%d %d\n", S_ISDIR(st.st_mode), st.st_mode);
+		if (S_ISDIR(st.st_mode))
 			create_dir(cont, av[i], fl, 0);
 		else
 		{
-			put_file(cont, av[i], stat);
+			put_file(cont, av[i], st);
 			cont->fil_num++;
 			cont->mlen = (cont->mlen > ft_strlen(av[i]) ? cont->mlen : ft_strlen(av[i]));
 		}

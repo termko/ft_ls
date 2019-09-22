@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:08:07 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 17:26:00 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 02:16:07 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void	print_master(t_cont *cont, t_fl fl, int ac)
 	{
 		printf("%s:\n", cont->name);
 	}
-	if (fl.l && !cont->from_av)
+	if (fl.l && !cont->from_av && cont->files)
 	{
 		printf("total %ld\n", cont->total);
 	}
