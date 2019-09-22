@@ -103,12 +103,21 @@ void	print_time(struct stat stat)
 	*(ret + ft_strlen(ret) - 8) = '\0';
 	printf(" %-.*s", (int)ft_strlen(ret) - 1, ret);
 }
-
-void	print_link(t_fil *file)
+/*
+void	print_link(struct stat fst, char *path)
 {
-	
-}
+	char	*linkname;
+	long	r;
 
+	linkname = (char*)malloc(fst.st_size + 1);
+	if ((r = readlink(path, linkname, fst.st_size + 1)) >= 0)
+	{
+		linkname[r] = '\0';
+		printf(" -> %s", linkname);
+	}
+	ft_strdel(&linkname);
+}
+*/
 void	detail_print(t_cont *cont)
 {
 	int		i;
