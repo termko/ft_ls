@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/23 06:52:04 by ydavis            #+#    #+#             */
+/*   Updated: 2019/09/23 07:24:54 by ydavis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 int		is_file(char *path)
 {
-    struct stat		path_stat;
-	int i;
+	struct stat	path_stat;
+	int			i;
 
 	if ((i = lstat(path, &path_stat)))
 	{
@@ -27,28 +39,13 @@ int		fill_opt(t_fl *fl, char *arg)
 		if (!ft_strchr(flags, arg[i]) || (arg[0] == '-'
 							&& arg[1] && arg[1] == '-'))
 			illegal_opt(arg[i]);
-		if (arg[i] == 'l' || arg[i] == '1')
-		{
-			fl->l = (arg[i] == 'l' ? 1 : 0);
-			fl->one = (arg[i] == '1' ? 1 : 0);
-		}
-		fl->up_r = arg[i] == 'R' ? 1 : fl->up_r;
-		fl->a = arg[i] == 'a' ? 1 : fl->a;
-		fl->r = arg[i] == 'r' ? 1 : fl->r;
-		fl->t = arg[i] == 't' ? 1 : fl->t;
-		// fl->u = arg[i] == 'u' ? 1 : fl->u;
-		if (arg[i] == 'f')
-		{
-			fl->f = 1;
-			fl->a = 1;
-		}
-		fl->p = arg[i] == 'p' ? 1 : fl->p;
+		fill_flags(fl, arg[i]);
 		i++;
 	}
 	return (1);
 }
 
-void		init_fl(int *ac, char ***av, t_fl *fl)
+void	init_fl(int *ac, char ***av, t_fl *fl)
 {
 	int		count;
 	int		i;
@@ -71,7 +68,7 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 {
 	t_cont	*cont;
 	t_fil	*tmp;
-	int	i;
+	int		i;
 
 	check_malloc(cont = (t_cont*)malloc(sizeof(t_cont)));
 	check_malloc(cont->name = ft_strdup(path));
@@ -116,42 +113,5 @@ void	create_dir(t_cont *cont, char *path, t_fl fl, int is_root)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = dir;
-	}
-}
-
-void	set_max_len(t_cont *cont)
-{
-	t_fil	*head;
-	long	tmp_len;
-	char	*tmp;
-
-	head = cont->files;
-	cont->total = 0;
-	cont->link_len = 0;
-	cont->own_len = 0;
-	cont->grp_len = 0;
-	cont->size_len = 0;
-	while (head)
-	{
-		cont->total += head->stat.st_blocks;
-		tmp = ft_intmaxtoa(head->stat.st_nlink, 10);
-		tmp_len = ft_strlen(tmp);
-		free(tmp);
-		cont->link_len = tmp_len > cont->link_len ? tmp_len : cont->link_len;
-		if (head->owner)
-		{
-			tmp_len = ft_strlen(head->owner);
-			cont->own_len = tmp_len > cont->own_len ? tmp_len : cont->own_len;
-		}
-		if (head->group)
-		{
-			tmp_len = ft_strlen(head->group);
-			cont->grp_len = tmp_len > cont->grp_len ? tmp_len : cont->grp_len;
-		}
-		tmp = ft_intmaxtoa(head->stat.st_size, 10);
-		tmp_len = ft_strlen(tmp);
-		free(tmp);
-		cont->size_len = tmp_len > cont->size_len ? tmp_len : cont->size_len;
-		head = head->next;
 	}
 }

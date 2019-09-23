@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:40:17 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 04:01:35 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 07:02:21 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	fill_fileaddr(t_cont *cont)
 	t_fil	*tmp;
 	int		i;
 
-	check_malloc(cont->faddr = (t_fil**)malloc(sizeof(t_fil*) * (cont->num + 1)));
+	check_malloc(cont->faddr = (t_fil**)malloc(sizeof(t_fil*) *
+				(cont->num + 1)));
 	tmp = cont->files;
 	i = 0;
 	while (tmp)
@@ -41,7 +42,7 @@ void	fill_fileaddr(t_cont *cont)
 	cont->faddr[i] = NULL;
 }
 
-long		ft_labs(long a)
+long	ft_labs(long a)
 {
 	return ((a > 0 ? a : -a));
 }

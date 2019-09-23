@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/23 07:40:11 by ydavis            #+#    #+#             */
+/*   Updated: 2019/09/23 07:59:21 by ydavis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	set_details(t_fil *file, t_fl fl)
@@ -42,7 +54,7 @@ char	*set_fullname(char *fold, char *file)
 	return (ret);
 }
 
-int in_which_inter(int max_len)
+int		in_which_inter(int max_len)
 {
 	int plus_8;
 
@@ -50,14 +62,14 @@ int in_which_inter(int max_len)
 	while (max_len >= plus_8)
 		plus_8 += 8;
 	max_len = plus_8;
-    return (max_len);
+	return (max_len);
 }
 
-int	fill_files_from_path(t_cont *cont, t_fl fl)
+int		fill_files_from_path(t_cont *cont, t_fl fl)
 {
 	DIR				*d;
 	t_fil			*head;
-    struct dirent	*dir;
+	struct dirent	*dir;
 	int				i;
 	int				flag;
 
@@ -84,37 +96,9 @@ int	fill_files_from_path(t_cont *cont, t_fl fl)
 				check_malloc(head->next = (t_fil*)malloc(sizeof(t_fil)));
 				head = head->next;
 			}
-			flag = 0;
 			head->name = NULL;
-			head->full_path = set_fullname(cont->name, dir->d_name);
-			if (lstat(head->full_path, &head->stat))
-			{
-				free(head->full_path);
-				flag = 1;
+			if ((flag = fill_check(cont, head, dir->d_name, fl)))
 				continue ;
-			}
-			set_details(head, fl);
-			if (!head->group || !head->owner)
-			{
-				free(head->full_path);
-				flag = 1;
-				continue ;
-			}
-			head->is_dir = (is_file(head->full_path) ? 0 : 1);
-			if (head->is_dir)
-			{
-				cont->dir_num++;
-				if (fl.p)
-				{
-					check_malloc(head->name = ft_strnew(ft_strlen(dir->d_name) + 1));
-					head->name = ft_strcat(head->name, dir->d_name);
-					head->name = ft_strcat(head->name, "/");
-				}
-				else
-					check_malloc(head->name = ft_strdup(dir->d_name));
-			}
-			if (!head->name)
-				check_malloc(head->name = ft_strdup(dir->d_name));
 			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
 			cont->fil_num += (is_file(head->full_path) ? 1 : 0);
 			head->next = NULL;

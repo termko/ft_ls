@@ -123,9 +123,10 @@ int		sort_time(t_fil *a, t_fil *b);
 int		sort_timerev(t_fil *a, t_fil *b);
 
 //------------------fill.c
-int	fill_files_from_path(t_cont *cont, t_fl fl);
+int		fill_files_from_path(t_cont *cont, t_fl fl);
 void	get_num_of_files(t_cont *cont, t_fl fl);
 int		in_which_inter(int max_len);
+char	*set_fullname(char *fold, char *file);
 
 //------------------utils.c
 void	check_malloc(void *addr);
@@ -147,6 +148,18 @@ void	print_type(mode_t mode);
 
 //------------------print_permissions.c
 void	print_permissions(mode_t mode);
+
+//------------------flags.c
+void	fill_flags(t_fl *fl, char c);
+
+//------------------master.c
+void	sort_print(t_cont *cont, t_fl fl, int ac);
+
+//------------------args_help.c
+t_cont	*init_cont(void);
+
+//------------------fill_help.c
+int		fill_check(t_cont *cont, t_fil *file, char *name, t_fl fl);
 
 //------------------free.c
 void	free_cont(t_cont **cont);

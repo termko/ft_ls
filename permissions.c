@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:09:19 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 06:21:15 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 06:51:22 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	first_perm(char *ret, mode_t mode)
 	ret[0] = (mode & S_IRUSR ? 'r' : '-');
 	ret[1] = (mode & S_IWUSR ? 'w' : '-');
 	val = mode & (S_IXUSR | S_ISUID);
-	if (val == 0 || val == S_ISUID)
+	if (val == 0 || val == S_IXUSR)
 		ret[2] = (val == 0 ? '-' : 'x');
 	else if (val == S_ISUID || val == (S_IXUSR | S_ISUID))
 		ret[2] = (val == S_ISUID ? 'S' : 's');
@@ -32,7 +32,7 @@ void	second_perm(char *ret, mode_t mode)
 	ret[3] = (mode & S_IRGRP ? 'r' : '-');
 	ret[4] = (mode & S_IWGRP ? 'w' : '-');
 	val = mode & (S_IXGRP | S_ISGID);
-	if (val == 0 || val == S_ISGID)
+	if (val == 0 || val == S_IXGRP)
 		ret[5] = (val == 0 ? '-' : 'x');
 	else if (val == S_ISGID || val == (S_IXGRP | S_ISGID))
 		ret[5] = (val == S_ISGID ? 'S' : 's');
@@ -53,8 +53,9 @@ void	third_perm(char *ret, mode_t mode)
 
 void	print_permissions(mode_t mode)
 {
-	char	ret[10];
+	char	*ret;
 
+	check_malloc(ret = (char*)malloc(sizeof(char) * 10));
 	first_perm(ret, mode);
 	second_perm(ret, mode);
 	third_perm(ret, mode);
