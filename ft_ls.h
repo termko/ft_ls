@@ -2,7 +2,7 @@
 # define FT_LS_H
 
 
-# include "libft/libft.h"
+# include "libft/inc/libft.h"
 # include <dirent.h>
 # include <sys/stat.h>
 # include <time.h>
