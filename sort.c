@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 20:28:08 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 19:28:15 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 05:24:54 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void	sort_master(t_cont *cont, t_fl fl)
 	int		j;
 	int		res;
 
+	if (fl.f)
+		return ;
 	if (fl.r)
 	{
 		if (fl.t)

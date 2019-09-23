@@ -76,7 +76,7 @@ void get_structured(t_cont *cont)
 	}
 }
 
-void normal_print(t_cont *cont)
+void normal_print(t_cont *cont, t_fl fl)
 {
 	int i;
 	int j;

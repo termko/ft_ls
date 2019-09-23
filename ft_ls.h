@@ -11,6 +11,7 @@
 # include <sys/ioctl.h> //can be cheating, but just trying
 //---------------------
 # include <sys/types.h>
+# include <sys/acl.h>
 # include <pwd.h>
 # include <uuid/uuid.h>
 # include <grp.h>
@@ -56,7 +57,7 @@ typedef struct		s_fl
 	int				t;		//complete
     // int				u;
 	int				f;		//complete
-	// int				p;
+	int				p;
 }					t_fl;
 
 typedef struct	s_cont
@@ -127,12 +128,16 @@ int		in_which_inter(int max_len);
 void	check_malloc(void *addr);
 void	fill_fileaddr(t_cont *cont);
 int		max(int a, int b);
+long	ft_labs(long a);
 
 //------------------column.c
-void	normal_print(t_cont *cont);
+void	normal_print(t_cont *cont, t_fl fl);
 
 //------------------print.c
 void	print_master(t_cont *cont, t_fl fl, int ac);
+
+//------------------print_permissions.c
+void	first_perm(char *ret, mode_t mode);
 
 //------------------free.c
 void	free_cont(t_cont **cont);

@@ -2,7 +2,7 @@
 
 void	illegal_opt(char c)
 {
-	printf("ls: illegal option -- %c\nusage: ls [-Raflrt] [file ...]\n", c);
+	printf("ls: illegal option -- %c\nusage: ls [-1Raflrtp] [file ...]\n", c);
 	exit(1);
 }
 

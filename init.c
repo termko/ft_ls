@@ -18,7 +18,7 @@ int		fill_opt(t_fl *fl, char *arg)
 	char	*flags;
 	int		i;
 
-	flags = "lRartf1";
+	flags = "lRartf1p";
 	if (!fl || !arg)
 		return (0);
 	i = 0;
@@ -27,15 +27,22 @@ int		fill_opt(t_fl *fl, char *arg)
 		if (!ft_strchr(flags, arg[i]) || (arg[0] == '-'
 							&& arg[1] && arg[1] == '-'))
 			illegal_opt(arg[i]);
-		fl->l = arg[i] == 'l' ? 1 : fl->l;
+		if (arg[i] == 'l' || arg[i] == '1')
+		{
+			fl->l = (arg[i] == 'l' ? 1 : 0);
+			fl->one = (arg[i] == '1' ? 1 : 0);
+		}
 		fl->up_r = arg[i] == 'R' ? 1 : fl->up_r;
 		fl->a = arg[i] == 'a' ? 1 : fl->a;
 		fl->r = arg[i] == 'r' ? 1 : fl->r;
 		fl->t = arg[i] == 't' ? 1 : fl->t;
-		fl->one = arg[i] == '1' ? 1 : fl->one;
 		// fl->u = arg[i] == 'u' ? 1 : fl->u;
-		fl->f = flags[i] == 'f' ? 1 : fl->f;
-		// fl->p L= flags[i] == 'p' ? 1 : fl->p;
+		if (arg[i] == 'f')
+		{
+			fl->f = 1;
+			fl->a = 1;
+		}
+		fl->p = arg[i] == 'p' ? 1 : fl->p;
 		i++;
 	}
 	return (1);
@@ -70,8 +77,8 @@ t_cont	*create_cont(char *path, t_fl fl, int is_root)
 	check_malloc(cont->name = ft_strdup(path));
 	cont->dirs = NULL;
 	cont->files = NULL;
-	cont->is_root = is_root;
-	cont->from_av = 0;
+	cont->is_root = (is_root == 1 ? 1 : 0);
+	cont->from_av = (is_root == 2 ? 1 : 0);
 	cont->dir_num = 0;
 	cont->fil_num = 0;
 	cont->num = 0;

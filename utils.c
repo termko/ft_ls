@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:40:17 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 18:08:10 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 04:01:35 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ void	fill_fileaddr(t_cont *cont)
 		tmp = tmp->next;
 	}
 	cont->faddr[i] = NULL;
+}
+
+long		ft_labs(long a)
+{
+	return ((a > 0 ? a : -a));
 }
 
 int		max(int a, int b)

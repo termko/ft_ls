@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:07:57 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/18 19:21:48 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 05:22:05 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ int		main(int argc, char **argv)
 	init_fl(&argc, &argv, &fl);
 	if (argc)
 	{
-		first_sort(argv);
+		if (!fl.f)
+			first_sort(argv);
 		cont = set_path(argc, argv, fl);
 	}
 	else

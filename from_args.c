@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 02:25:46 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 03:30:30 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,8 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 			i++;
 			continue ;
 		}
-		printf("%d %d\n", S_ISDIR(st.st_mode), st.st_mode);
 		if (S_ISDIR(st.st_mode))
-			create_dir(cont, av[i], fl, 0);
+			create_dir(cont, av[i], fl, 2);
 		else
 		{
 			put_file(cont, av[i], st);

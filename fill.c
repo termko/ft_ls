@@ -85,6 +85,7 @@ int	fill_files_from_path(t_cont *cont, t_fl fl)
 				head = head->next;
 			}
 			flag = 0;
+			head->name = NULL;
 			head->full_path = set_fullname(cont->name, dir->d_name);
 			if (lstat(head->full_path, &head->stat))
 			{
@@ -99,12 +100,23 @@ int	fill_files_from_path(t_cont *cont, t_fl fl)
 				flag = 1;
 				continue ;
 			}
-			check_malloc(head->name = ft_strdup(dir->d_name));
-			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
-			cont->fil_num += (is_file(head->full_path) ? 1 : 0);
 			head->is_dir = (is_file(head->full_path) ? 0 : 1);
 			if (head->is_dir)
+			{
 				cont->dir_num++;
+				if (fl.p)
+				{
+					check_malloc(head->name = ft_strnew(ft_strlen(dir->d_name) + 1));
+					head->name = ft_strcat(head->name, dir->d_name);
+					head->name = ft_strcat(head->name, "/");
+				}
+				else
+					check_malloc(head->name = ft_strdup(dir->d_name));
+			}
+			if (!head->name)
+				check_malloc(head->name = ft_strdup(dir->d_name));
+			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
+			cont->fil_num += (is_file(head->full_path) ? 1 : 0);
 			head->next = NULL;
 			i++;
 		}
