@@ -6,7 +6,7 @@
 /*   By: vellery- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:10:21 by vellery-          #+#    #+#             */
-/*   Updated: 2019/07/01 00:56:36 by vellery-         ###   ########.fr       */
+/*   Updated: 2019/09/23 06:39:42 by vellery-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void			*ft_memchr(const void *s, int c, size_t n);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 size_t			ft_strlen(const char *s);
 char			*ft_strdup(const char *s1);
+char			*ft_strndup(const char *s1, int n);
 char			*ft_strncpy(char *dst, const char *src, size_t len);
 char			*ft_strcat(char *s1, const char *s2);
 char			*ft_strncat(char *s1, const char *s2, size_t n);
@@ -68,6 +69,7 @@ char			*ft_strmap(char const *s, char (*f)(char));
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_strnjoin(char *s1, char *s2, int len_s1, int len_s2);
 char			*ft_strtrim(char const *s);
 char			*ft_itoa(int n);
 char			*ft_ftoa(long double val, int preci, int sign);
@@ -97,4 +99,6 @@ void			ft_change_val(int **mat, int str_pos, int stb_pos, int val);
 char			*ft_intmaxtoa(intmax_t val, int base);
 char			*ft_uintmaxtoa(uintmax_t val, int base);
 
+intmax_t		ft_abs(intmax_t val);
+int				ft_printf(const char *format, ...);
 #endif
