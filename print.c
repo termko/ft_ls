@@ -6,12 +6,13 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:08:07 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 06:07:56 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 06:24:58 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+/*
 void	print_type(mode_t mode)
 {
 	int	val;
@@ -34,13 +35,14 @@ void	print_type(mode_t mode)
 	else
 		ft_printf("?");
 }
+*/
 
+/*
 void	print_permissions(mode_t mode)
 {
 	int		val;
 	char	ret[10];
 
-/*
 	ret[0] = (mode & S_IRUSR ? 'r' : '-');
 	ret[1] = (mode & S_IWUSR ? 'w' : '-');
 	val = mode & (S_IXUSR | S_ISUID);
@@ -48,7 +50,6 @@ void	print_permissions(mode_t mode)
 		ret[2] = (val == 0 ? '-' : 'x');
 	else if (val == S_ISUID || val == (S_IXUSR | S_ISUID))
 		ret[2] = (val == S_ISUID ? 'S' : 's');
-*/
 	first_perm(ret, mode);
 	ret[3] = (mode & S_IRGRP ? 'r' : '-');
 	ret[4] = (mode & S_IWGRP ? 'w' : '-');
@@ -57,6 +58,7 @@ void	print_permissions(mode_t mode)
 		ret[5] = (val == 0 ? '-' : 'x');
 	else if (val == S_ISGID || val == (S_IXGRP | S_ISGID))
 		ret[5] = (val == S_ISGID ? 'S' : 's');
+	second_perm(ret, mode);
 	ret[6] = (mode & S_IROTH ? 'r' : '-');
 	ret[7] = (mode & S_IWOTH ? 'w' : '-');
 	val = mode & (S_IXOTH | S_ISVTX);
@@ -64,9 +66,11 @@ void	print_permissions(mode_t mode)
 		ret[8] = (val == 0 ? '-' : 'x');
 	else if (val == S_ISVTX || val == (S_IXOTH | S_ISVTX))
 		ret[8] = (val == S_ISVTX ? 'T' : 't');
+	third_perm(ret, mode);
 	ret[9] = '\0';
 	ft_printf("%s", ret);
 }
+*/
 
 void	print_xattr(char *path)
 {
@@ -91,11 +95,13 @@ void	print_xattr(char *path)
 	ft_printf("%c ", sym);
 }
 
+/*
 void	print_owngroup(t_fil *file, t_cont *cont)
 {
 	ft_printf("%-*s ", cont->own_len, file->owner);
 	ft_printf(" %-*s ", cont->grp_len, file->group);
 }
+*/
 
 void	print_time(struct stat stat)
 {
@@ -125,6 +131,7 @@ void	print_time(struct stat stat)
 	}
 }
 
+/*
 void	print_link(t_fil *file)
 {
 	char	*linkname;
@@ -135,7 +142,9 @@ void	print_link(t_fil *file)
 		ft_printf(" -> %s", linkname);
 	ft_strdel(&linkname);
 }
+*/
 
+/*
 void	print_size(t_cont *cont, t_fil *file)
 {
 	int i;
@@ -143,14 +152,17 @@ void	print_size(t_cont *cont, t_fil *file)
 	if (S_ISCHR(file->stat.st_mode) || S_ISBLK(file->stat.st_mode))
 	{
 		if (minor(file->stat.st_rdev) > 255 || minor(file->stat.st_rdev) < 0)
-			i = ft_printf(" %3d, 0x%08x", major(file->stat.st_rdev), (u_int)minor(file->stat.st_rdev));
+			i = ft_printf(" %3d, 0x%08x", major(file->stat.st_rdev),
+					(u_int)minor(file->stat.st_rdev));
 		else
-			i = ft_printf(" %3d, %3d", major(file->stat.st_rdev), minor(file->stat.st_rdev));
+			i = ft_printf(" %3d, %3d", major(file->stat.st_rdev),
+					minor(file->stat.st_rdev));
 		cont->size_len = max(cont->size_len, i - 1);
 	}
 	else
 		ft_printf(" %*lld", cont->size_len, file->stat.st_size);
 }
+*/
 
 void	detail_print(t_cont *cont, t_fl fl)
 {

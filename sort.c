@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 20:28:08 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 05:24:54 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/23 06:31:16 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	re_cmp(char **lower, char **upper)
 {
-    char *tmp;
+	char *tmp;
 
 	if (lower != upper)
-	{			
+	{
 		tmp = *lower;
 		*lower = *upper;
 		*upper = tmp;
-	}	
+	}
 }
 
 void	first_sort(char **arg)
@@ -69,6 +69,7 @@ void	change_faddr(t_fil **a, t_fil **b, int r, int res)
 	}
 }
 
+/*
 int		sort_standart(t_fil *a, t_fil *b)
 {
 	return (ft_strcmp(a->name, b->name));
@@ -87,6 +88,30 @@ int		sort_time(t_fil *a, t_fil *b)
 int		sort_timerev(t_fil *a, t_fil *b)
 {
 	return (a->stat.st_mtime - b->stat.st_mtime);
+}
+*/
+
+void	cycle_sort(t_cont *cont, int (*sort)(t_fil *a, t_fil *b), t_fl fl)
+{
+	int	i;
+	int	j;
+	int	res;
+
+	i = 0;
+	while (cont->faddr[i])
+	{
+		j = i;
+		while (cont->faddr[j])
+		{
+			if (cont->faddr[i]->name && cont->faddr[j]->name)
+			{
+				if ((res = sort(cont->faddr[i], cont->faddr[j])) > 0)
+					change_faddr(&cont->faddr[i], &cont->faddr[j], fl.r, res);
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 void	sort_master(t_cont *cont, t_fl fl)
@@ -112,6 +137,8 @@ void	sort_master(t_cont *cont, t_fl fl)
 		else
 			sort = sort_standart;
 	}
+	cycle_sort(cont, sort, fl);
+	/*
 	i = 0;
 	while (cont->faddr[i])
 	{
@@ -127,4 +154,5 @@ void	sort_master(t_cont *cont, t_fl fl)
 		}
 		i++;
 	}
+	*/
 }

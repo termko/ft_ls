@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_permissions.c                                :+:      :+:    :+:   */
+/*   help_sort.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/23 06:03:17 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 06:07:18 by ydavis           ###   ########.fr       */
+/*   Created: 2019/09/23 06:25:38 by ydavis            #+#    #+#             */
+/*   Updated: 2019/09/23 06:31:28 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	first_perm(char *ret, mode_t mode)
+int		sort_standart(t_fil *a, t_fil *b)
 {
-	int		val;
+	return (ft_strcmp(a->name, b->name));
+}
 
-	ret[0] = (mode & S_IRUSR ? 'r' : '-');
-	ret[1] = (mode & S_IWUSR ? 'w' : '-');
-	val = mode & (S_IXUSR | S_ISUID);
-	if (val == 0 || val == S_ISUID)
-		ret[2] = (val == 0 ? '-' : 'x');
-	else if (val == S_ISUID || val == (S_IXUSR | S_ISUID))
-		ret[2] = (val == S_ISUID ? 'S' : 's');
+int		sort_rev(t_fil *a, t_fil *b)
+{
+	return (ft_strcmp(b->name, a->name));
+}
+
+int		sort_time(t_fil *a, t_fil *b)
+{
+	return (b->stat.st_mtime - a->stat.st_mtime);
+}
+
+int		sort_timerev(t_fil *a, t_fil *b)
+{
+	return (a->stat.st_mtime - b->stat.st_mtime);
 }

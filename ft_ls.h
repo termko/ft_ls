@@ -105,8 +105,7 @@ int		fill_opt(t_fl *fl, char *arg);
 void	init_fl(int *ac, char ***av, t_fl *fl);
 int		is_file(char *path);
 void	set_max_len(t_cont *cont);
-void		create_dir(t_cont *cont, char *path, t_fl fl, int is_root);
-// void	check_if_files_exist(char **av);
+void	create_dir(t_cont *cont, char *path, t_fl fl, int is_root);
 
 //------------------main container init
 t_cont	*create_cont(char *path, t_fl fl, int is_root);
@@ -116,8 +115,12 @@ t_cont	*set_path(int ac, char **av, t_fl fl);
 //------------------sort.c
 void	first_sort(char **arg);
 void	sort_master(t_cont *cont, t_fl fl);
+
+//------------------help_sort.c
 int		sort_standart(t_fil *a, t_fil *b);
 int		sort_rev(t_fil *a, t_fil *b);
+int		sort_time(t_fil *a, t_fil *b);
+int		sort_timerev(t_fil *a, t_fil *b);
 
 //------------------fill.c
 int	fill_files_from_path(t_cont *cont, t_fl fl);
@@ -136,8 +139,14 @@ void	normal_print(t_cont *cont, t_fl fl);
 //------------------print.c
 void	print_master(t_cont *cont, t_fl fl, int ac);
 
+//------------------detailed.c
+void	print_link(t_fil *file);
+void	print_size(t_cont *cont, t_fil *file);
+void	print_owngroup(t_fil *file, t_cont *cont);
+void	print_type(mode_t mode);
+
 //------------------print_permissions.c
-void	first_perm(char *ret, mode_t mode);
+void	print_permissions(mode_t mode);
 
 //------------------free.c
 void	free_cont(t_cont **cont);
