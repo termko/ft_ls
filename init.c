@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:52:04 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:24:54 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 20:06:25 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int		is_file(char *path)
 
 	if ((i = lstat(path, &path_stat)))
 	{
-		perror(path);
+		just_perror(path);
+		g_ret = 1;
 		return (-1);
 	}
 	return (!S_ISDIR(path_stat.st_mode));
@@ -62,12 +63,12 @@ void	init_fl(int *ac, char ***av, t_fl *fl)
 	}
 	*ac -= count + 1;
 	*av += i;
+	printf("args: %s\n", **av);
 }
 
 t_cont	*create_cont(char *path, t_fl fl, int is_root)
 {
 	t_cont	*cont;
-	t_fil	*tmp;
 	int		i;
 
 	check_malloc(cont = (t_cont*)malloc(sizeof(t_cont)));

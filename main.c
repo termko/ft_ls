@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:07:57 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:09:22 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 19:35:16 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int		main(int argc, char **argv)
 	t_cont	*cont;
 	t_fl	fl;
 
-	fl = (t_fl){0, 0, 0, 0, 0, 0, 0};
+	g_ret = 0;
+	fl = (t_fl){0, 0, 0, 0, 0, 0, 0, 0};
 	init_fl(&argc, &argv, &fl);
 	if (argc)
 	{
@@ -28,7 +29,7 @@ int		main(int argc, char **argv)
 	else
 		cont = create_cont(".", fl, 1);
 	if (!cont)
-		exit(1);
+		exit(EXIT_FAILURE);
 	sort_print(cont, fl, argc);
-	return (0);
+	return (g_ret);
 }

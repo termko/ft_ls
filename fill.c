@@ -6,15 +6,14 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 07:40:11 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:59:21 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 19:22:26 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	set_details(t_fil *file, t_fl fl)
+void	set_details(t_fil *file)
 {
-	struct stat		fst;
 	struct group	*grp;
 	struct passwd	*tf;
 
@@ -23,11 +22,17 @@ void	set_details(t_fil *file, t_fl fl)
 	if ((grp = getgrgid(file->stat.st_gid)))
 		file->group = ft_strdup(grp->gr_name);
 	else
-		perror(file->full_path);
+	{
+		just_perror(file->full_path);
+		g_ret = 1;
+	}
 	if ((tf = getpwuid(file->stat.st_uid)))
 		file->owner = ft_strdup(tf->pw_name);
 	else
-		perror(file->full_path);
+	{
+		just_perror(file->full_path);
+		g_ret = 1;
+	}
 }
 
 char	*set_fullname(char *fold, char *file)
@@ -78,7 +83,8 @@ int		fill_files_from_path(t_cont *cont, t_fl fl)
 	cont->dir_num = 0;
 	if (!(d = opendir(cont->name)))
 	{
-		perror(cont->name);
+		just_perror(cont->name);
+		g_ret = 1;
 		cont->files = NULL;
 		return (-1);
 	}
@@ -104,7 +110,7 @@ int		fill_files_from_path(t_cont *cont, t_fl fl)
 			head->next = NULL;
 			i++;
 		}
-//	check_head(&(cont->files)); CHECK FOR LAST ELEM
+	check_head(&(cont->files), i);
 	cont->mlen = in_which_inter(cont->mlen);
 	cont->num = i;
 	closedir(d);

@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 07:40:34 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:52:54 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 18:39:05 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ int		fill_check(t_cont *cont, t_fil *file, char *name, t_fl fl)
 	if (lstat(file->full_path, &file->stat))
 	{
 		free(file->full_path);
+		g_ret = 1;
 		return (1);
 	}
-	set_details(file, fl);
+	set_details(file);
 	if (!file->group || !file->owner)
 	{
 		free(file->full_path);
@@ -43,4 +44,25 @@ int		fill_check(t_cont *cont, t_fil *file, char *name, t_fl fl)
 	if (!file->name)
 		check_malloc(file->name = ft_strdup(name));
 	return (0);
+}
+
+void	check_head(t_fil **files, int count)
+{
+	t_fil	*tmp;
+	int		i;
+
+	if (!count)
+		return ;
+	tmp = *files;
+	i = 0;
+	while (i < count - 1)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	if (tmp->next)
+	{
+		free(tmp->next);
+		tmp->next = NULL;
+	}
 }

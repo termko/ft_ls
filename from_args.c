@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:39:45 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 18:51:45 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int		fill_file(t_fil *file, char *name, struct stat stat)
 	check_malloc(file->name = ft_strdup(name));
 	if (lstat(file->name, &file->stat))
 	{
-		perror(file->name);
+		g_ret = 1;
+		just_perror(file->name);
 		return (-1);
 	}
 	fill_owngroup(file);
@@ -37,7 +38,6 @@ int		fill_file(t_fil *file, char *name, struct stat stat)
 void	put_file(t_cont *cont, char *name, struct stat stat)
 {
 	t_fil *file;
-	t_fil *tmp;
 
 	if (!cont->files)
 	{
@@ -56,12 +56,23 @@ void	put_file(t_cont *cont, char *name, struct stat stat)
 		failed_fill(cont, file);
 }
 
+void	check_file(t_cont *cont, struct stat st, t_fl fl, char *file)
+{
+	if (S_ISDIR(st.st_mode))
+		create_dir(cont, file, fl, 2);
+	else
+	{
+		put_file(cont, file, st);
+		cont->fil_num++;
+		cont->mlen = max(cont->mlen, ft_strlen(file));
+	}
+}
+
 t_cont	*set_path(int ac, char **av, t_fl fl)
 {
 	t_cont		*cont;
 	struct stat	st;
 	int			i;
-	char		*tmp;
 
 	cont = init_cont();
 	i = 0;
@@ -69,7 +80,8 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 	{
 		if ((fl.l ? lstat(av[i], &st) : stat(av[i], &st)))
 		{
-			perror(av[i]);
+			g_ret = 1;
+			just_perror(av[i]);
 			i++;
 			continue ;
 		}

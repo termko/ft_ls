@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:08:07 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 06:51:49 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 19:47:58 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	print_time(struct stat stat)
 {
 	char	*ret;
 	long	tmp;
-	char	*print;
 	int		i;
 
 	ret = ctime(&stat.st_mtime);
@@ -47,12 +46,12 @@ void	print_time(struct stat stat)
 	ret = ret + 4;
 	if (ft_labs(tmp - stat.st_mtime) > 15768000)
 	{
-		printf(" ");
+		ft_printf(" ");
 		i = 0;
 		while (i < 7)
 			ft_printf("%c", ret[i++]);
 		i = 16;
-		printf(" ");
+		ft_printf(" ");
 		while (i < 20)
 			ft_printf("%c", ret[i++]);
 	}
@@ -68,6 +67,7 @@ void	detail_print(t_cont *cont, t_fl fl)
 	int		i;
 	t_fil	*file;
 
+	(void)fl;
 	i = 0;
 	while (cont->faddr[i])
 	{
@@ -92,6 +92,7 @@ void	onestr_print(t_cont *cont, t_fl fl)
 {
 	int i;
 
+	(void)fl;
 	i = 0;
 	while (cont->faddr[i])
 	{

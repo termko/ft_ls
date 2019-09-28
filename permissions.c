@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:09:19 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 06:51:22 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 19:29:16 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ void	print_permissions(mode_t mode)
 	third_perm(ret, mode);
 	ret[9] = '\0';
 	ft_printf("%s", ret);
+	free(ret);
 }

@@ -6,15 +6,44 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 07:02:48 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:09:29 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 18:34:20 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+t_cont	*find_cont(t_cont *cont)
+{
+	t_dirs *tmp;
+
+	tmp = cont->dirs;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp->cont);
+}
+
+void	next_dir(t_cont *cont, int flag)
+{
+	if (cont->dirs)
+	{
+		if (!cont->name && cont->files)
+		{
+			ft_printf("\n");
+		}
+		else if (cont->name && !ft_strcmp(cont->name, "."))
+		{
+			ft_printf("\n");
+		}
+		else if (flag)
+		{
+			ft_printf("\n");
+		}
+	}
+}
+
 void	recursion_starter(t_cont *cont, t_fl fl)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	while (cont->faddr[i])
@@ -40,16 +69,11 @@ void	sort_print(t_cont *cont, t_fl fl, int ac)
 		set_max_len(cont);
 	print_master(cont, fl, ac);
 	if (fl.up_r && cont->dir_num)
-		recursion_starter(cont, fl);
-	if (cont->dirs)
 	{
-		if (!cont->name && cont->files)
-			printf("\n");
-		else if (cont->name && !ft_strcmp(cont->name, "."))
-			printf("\n");
-		else if (flag)
-			printf("\n");
+		recursion_starter(cont, fl);
+		flag = 1;
 	}
+	next_dir(cont, flag);
 	flag = 1;
 	dir = cont->dirs;
 	while (dir)
@@ -57,7 +81,7 @@ void	sort_print(t_cont *cont, t_fl fl, int ac)
 		sort_print(dir->cont, fl, ac);
 		dir = dir->next;
 		if (dir)
-			printf("\n");
+			ft_printf("\n");
 	}
 	free_cont(&cont);
 }

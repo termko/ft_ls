@@ -6,23 +6,11 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 07:25:27 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:38:38 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 18:53:48 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-void	check_file(t_cont *cont, struct stat st, t_fl fl, char *file)
-{
-	if (S_ISDIR(st.st_mode))
-		create_dir(cont, file, fl, 2);
-	else
-	{
-		put_file(cont, file, st);
-		cont->fil_num++;
-		cont->mlen = max(cont->mlen, ft_strlen(file));
-	}
-}
 
 void	fill_owngroup(t_fil *file)
 {
@@ -34,11 +22,17 @@ void	fill_owngroup(t_fil *file)
 	if ((grp = getgrgid(file->stat.st_gid)))
 		check_malloc(file->group = ft_strdup(grp->gr_name));
 	else
-		perror(file->name);
+	{
+		g_ret = 1;
+		just_perror(file->name);
+	}
 	if ((tf = getpwuid(file->stat.st_uid)))
 		check_malloc(file->owner = ft_strdup(tf->pw_name));
 	else
-		perror(file->name);
+	{
+		just_perror(file->name);
+		g_ret = 1;
+	}
 }
 
 void	failed_fill(t_cont *cont, t_fil *file)

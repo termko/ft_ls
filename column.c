@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   column.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/28 14:17:39 by ydavis            #+#    #+#             */
+/*   Updated: 2019/09/28 15:04:06 by ydavis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 int get_size(t_cont *cont)
@@ -44,7 +56,6 @@ void get_structured(t_cont *cont)
 	int i;
 	int j;
 	int num;
-	// char **ret;
 	char *name;
 
 	check_malloc(cont->ret = (char**)malloc(sizeof(char*) * (cont->lin + 1)));
@@ -79,15 +90,15 @@ void get_structured(t_cont *cont)
 void normal_print(t_cont *cont, t_fl fl)
 {
 	int i;
-	int j;
 
+	(void)fl;
 	i = 0;
 	if (!get_size(cont))
 		return ;
 	get_structured(cont);
 	while (cont->ret[i])
 	{
-		printf("%s\n", cont->ret[i]);
+		ft_printf("%s\n", cont->ret[i]);
 		free(cont->ret[i]);
 		i++;
 	}

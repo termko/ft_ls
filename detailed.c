@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:15:50 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 06:42:27 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 19:42:06 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ void	print_link(t_fil *file)
 	char	*linkname;
 	long	r;
 
-	check_malloc(linkname = (char*)malloc(sizeof(char) * file->stat.st_size));
+	check_malloc(linkname = (char*)malloc(sizeof(char) * file->stat.st_size + 1));
 	if ((r = readlink(file->full_path, linkname, file->stat.st_size)) > 0)
+	{
+		linkname[file->stat.st_size] = '\0';
 		ft_printf(" -> %s", linkname);
+	}
 	ft_strdel(&linkname);
 }
 
