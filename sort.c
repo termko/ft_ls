@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 20:28:08 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 13:57:30 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 20:36:26 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,13 @@ void	cycle_sort(t_cont *cont, int (*sort)(t_fil *a, t_fil *b), t_fl fl)
 void	sort_master(t_cont *cont, t_fl fl)
 {
 	int		(*sort)(t_fil *a, t_fil *b);
+	int		(*first)(t_fil *a, t_fil *b);
 
 	if (fl.f)
 		return ;
 	if (fl.r)
 	{
+		first = sort_rev;
 		if (fl.t)
 			sort = sort_timerev;
 		else
@@ -107,10 +109,13 @@ void	sort_master(t_cont *cont, t_fl fl)
 	}
 	else
 	{
+		first = sort_standart;
 		if (fl.t)
 			sort = sort_time;
 		else
 			sort = sort_standart;
 	}
+	if (sort != first)
+		cycle_sort(cont, first, fl);
 	cycle_sort(cont, sort, fl);
 }

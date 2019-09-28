@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:52:04 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 20:06:25 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/28 22:35:04 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,12 @@ void	init_fl(int *ac, char ***av, t_fl *fl)
 	{
 		if ((*av)[i][1])
 			count += fill_opt(fl, (*av)[i] + 1);
+		else
+			break ;
 		i++;
 	}
 	*ac -= count + 1;
 	*av += i;
-	printf("args: %s\n", **av);
 }
 
 t_cont	*create_cont(char *path, t_fl fl, int is_root)
