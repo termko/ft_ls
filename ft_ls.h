@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <sys/xattr.h>
-# include "ft_printf/libftprintf.h"
+# include "libftprintf.h"
 //# include <sys/acl.h>
 # define BUFF_SIZE 255
 //----
