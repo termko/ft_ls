@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 07:40:11 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 19:22:26 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 20:06:00 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,20 @@ int		in_which_inter(int max_len)
 	return (max_len);
 }
 
+void	init_mlen(t_cont *cont)
+{
+	cont->mlen = 0;
+	cont->fil_num = 0;
+	cont->dir_num = 0;
+}
+
 int		fill_files_from_path(t_cont *cont, t_fl fl)
 {
 	DIR				*d;
 	t_fil			*head;
-	struct dirent	*dir;
 	int				i;
-	int				flag;
 
-	cont->mlen = 0;
-	cont->fil_num = 0;
-	cont->dir_num = 0;
+	init_mlen(cont);
 	if (!(d = opendir(cont->name)))
 	{
 		just_perror(cont->name);
@@ -89,27 +92,8 @@ int		fill_files_from_path(t_cont *cont, t_fl fl)
 		return (-1);
 	}
 	check_malloc(cont->files = (t_fil*)malloc(sizeof(t_fil)));
-	i = 0;
-	flag = 0;
 	head = cont->files;
-	while ((dir = readdir(d)))
-		if (dir->d_name[0] != '.' || fl.a)
-		{
-			if (!head)
-				error_exit("Unexpected error with malloc! Exiting...\n");
-			if (i && !flag)
-			{
-				check_malloc(head->next = (t_fil*)malloc(sizeof(t_fil)));
-				head = head->next;
-			}
-			head->name = NULL;
-			if ((flag = fill_check(cont, head, dir->d_name, fl)))
-				continue ;
-			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
-			cont->fil_num += (is_file(head->full_path) ? 1 : 0);
-			head->next = NULL;
-			i++;
-		}
+	i = fill_cycle(d, cont, fl, head);
 	check_head(&(cont->files), i);
 	cont->mlen = in_which_inter(cont->mlen);
 	cont->num = i;

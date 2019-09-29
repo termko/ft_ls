@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 07:40:34 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 18:39:05 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 20:03:52 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,35 @@ int		fill_check(t_cont *cont, t_fil *file, char *name, t_fl fl)
 	if (!file->name)
 		check_malloc(file->name = ft_strdup(name));
 	return (0);
+}
+
+int		fill_cycle(DIR *d, t_cont *cont, t_fl fl, t_fil *head)
+{
+	int				i;
+	int				flag;
+	struct dirent	*dir;
+
+	flag = 0;
+	i = 0;
+	while ((dir = readdir(d)))
+		if (dir->d_name[0] != '.' || fl.a)
+		{
+			if (!head)
+				error_exit("Unexpected error with malloc! Exiting...\n");
+			if (i && !flag)
+			{
+				check_malloc(head->next = (t_fil*)malloc(sizeof(t_fil)));
+				head = head->next;
+			}
+			head->name = NULL;
+			if ((flag = fill_check(cont, head, dir->d_name, fl)))
+				continue ;
+			cont->mlen = max(ft_strlen(dir->d_name), cont->mlen);
+			cont->fil_num += (is_file(head->full_path) ? 1 : 0);
+			head->next = NULL;
+			i++;
+		}
+	return (i);
 }
 
 void	check_head(t_fil **files, int count)

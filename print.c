@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:08:07 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 16:17:21 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 17:54:08 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,20 +119,6 @@ void	print_master(t_cont *cont, t_fl fl, int ac)
 		print = onestr_print;
 	else
 		print = normal_print;
-/*
-	if (!cont->is_root && cont->from_av && ac > 1)
-	{
-		ft_printf("%s:\n", cont->name);
-	}
-	else if (!cont->is_root && fl.up_r && (!cont->from_av || ac > 1))
-	{
-		ft_printf("%s:\n", cont->name);
-	}
-	if (fl.l && (!cont->from_av || !cont->is_root) && cont->files)
-	{
-		ft_printf("total %ld\n", cont->total);
-	}
-*/
 	(void)ac;
 	print(cont, fl);
 }

@@ -6,11 +6,21 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:53:18 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:01:05 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 17:55:36 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+t_cont	*find_cont(t_cont *cont)
+{
+	t_dirs *tmp;
+
+	tmp = cont->dirs;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp->cont);
+}
 
 void	set_len(int *cont, char *str)
 {

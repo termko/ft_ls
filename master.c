@@ -6,38 +6,28 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 07:02:48 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 16:43:21 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 17:56:23 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_cont	*find_cont(t_cont *cont)
-{
-	t_dirs *tmp;
-
-	tmp = cont->dirs;
-	while (tmp->next)
-		tmp = tmp->next;
-	return (tmp->cont);
-}
-
 void	next_dir(t_cont *cont)
 {
 	static int	flag = 0;
 
-		if (!cont->name && cont->fil_num)
-		{
-			ft_printf("\n");
-		}
-		else if (cont->name && !ft_strcmp(cont->name, "."))
-		{
-			ft_printf("\n");
-		}
-		else if (flag)
-		{
-			ft_printf("\n");
-		}
+	if (!cont->name && cont->fil_num)
+	{
+		ft_printf("\n");
+	}
+	else if (cont->name && !ft_strcmp(cont->name, "."))
+	{
+		ft_printf("\n");
+	}
+	else if (flag)
+	{
+		ft_printf("\n");
+	}
 	flag = 1;
 }
 
@@ -127,17 +117,6 @@ void	sort_print(t_cont *cont, t_fl fl, int ac)
 	{
 		recursion_av(cont, fl, ac);
 	}
-	//next_dir(cont, flag);
-/*
-	dir = cont->dirs;
-	while (dir)
-	{
-		sort_print(dir->cont, fl, ac);
-		dir = dir->next;
-		if (dir)
-			ft_printf("\n");
-	}
-	*/
 	(void)dir;
-//	free_cont(&cont);
+	free_cont(&cont);
 }

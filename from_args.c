@@ -6,23 +6,28 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 16:41:47 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 18:05:03 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+int		fill_dir(t_fil *file)
+{
+	file->is_dir = 1;
+	check_malloc(file->full_path = ft_strdup(file->name));
+	file->group = NULL;
+	file->owner = NULL;
+	file->next = NULL;
+	return (0);
+}
 
 int		fill_file(t_fil *file, char *name, struct stat stat, int is_dir)
 {
 	check_malloc(file->name = ft_strdup(name));
 	if (is_dir)
 	{
-		file->is_dir = 1;
-		check_malloc(file->full_path = ft_strdup(file->name));
-		file->group = NULL;
-		file->owner = NULL;
-		file->next = NULL;
-		return (0);
+		return (fill_dir(file));
 	}
 	if (lstat(file->name, &file->stat))
 	{
