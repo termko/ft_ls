@@ -6,15 +6,24 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 18:51:45 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 16:41:47 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		fill_file(t_fil *file, char *name, struct stat stat)
+int		fill_file(t_fil *file, char *name, struct stat stat, int is_dir)
 {
 	check_malloc(file->name = ft_strdup(name));
+	if (is_dir)
+	{
+		file->is_dir = 1;
+		check_malloc(file->full_path = ft_strdup(file->name));
+		file->group = NULL;
+		file->owner = NULL;
+		file->next = NULL;
+		return (0);
+	}
 	if (lstat(file->name, &file->stat))
 	{
 		g_ret = 1;
@@ -35,7 +44,7 @@ int		fill_file(t_fil *file, char *name, struct stat stat)
 	return (0);
 }
 
-void	put_file(t_cont *cont, char *name, struct stat stat)
+void	put_file(t_cont *cont, char *name, struct stat stat, int is_dir)
 {
 	t_fil *file;
 
@@ -52,17 +61,18 @@ void	put_file(t_cont *cont, char *name, struct stat stat)
 		check_malloc(file->next = (t_fil*)malloc(sizeof(t_fil)));
 		file = file->next;
 	}
-	if (fill_file(file, name, stat))
+	if (fill_file(file, name, stat, is_dir))
 		failed_fill(cont, file);
 }
 
 void	check_file(t_cont *cont, struct stat st, t_fl fl, char *file)
 {
+	(void)fl;
 	if (S_ISDIR(st.st_mode))
-		create_dir(cont, file, fl, 2);
+		put_file(cont, file, st, 1);
 	else
 	{
-		put_file(cont, file, st);
+		put_file(cont, file, st, 0);
 		cont->fil_num++;
 		cont->mlen = max(cont->mlen, ft_strlen(file));
 	}

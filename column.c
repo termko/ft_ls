@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 14:17:39 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 15:04:06 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 16:36:11 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void get_structured(t_cont *cont)
 		num = i;
 		while (j < cont->col)
 		{
-			if (num < cont->num)
+			if (num < cont->num && (!cont->faddr[num]->is_dir || !cont->from_av))
 				name = cont->faddr[num]->name;
 			else
 				name = NULL;

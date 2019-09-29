@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:40:17 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/23 07:02:21 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 16:35:12 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void	fill_fileaddr(t_cont *cont)
 	i = 0;
 	while (tmp)
 	{
+		if (tmp->is_dir && cont->is_root && cont->from_av)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		cont->faddr[i] = tmp;
 		i++;
 		tmp = tmp->next;

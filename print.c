@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:08:07 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 19:47:58 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 16:17:21 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ void	detail_print(t_cont *cont, t_fl fl)
 	{
 		file = cont->faddr[i];
 		if (file->is_dir && cont->from_av && cont->is_root)
-			return ;
+		{
+			i++;
+			continue ;
+		}
 		print_type(file->stat.st_mode);
 		print_permissions(file->stat.st_mode);
 		print_xattr(file->full_path);
@@ -96,6 +99,11 @@ void	onestr_print(t_cont *cont, t_fl fl)
 	i = 0;
 	while (cont->faddr[i])
 	{
+		if (cont->faddr[i]->is_dir && cont->from_av && cont->is_root)
+		{
+			i++;
+			continue ;
+		}
 		ft_printf("%s\n", cont->faddr[i]->name);
 		i++;
 	}
@@ -111,6 +119,7 @@ void	print_master(t_cont *cont, t_fl fl, int ac)
 		print = onestr_print;
 	else
 		print = normal_print;
+/*
 	if (!cont->is_root && cont->from_av && ac > 1)
 	{
 		ft_printf("%s:\n", cont->name);
@@ -123,5 +132,7 @@ void	print_master(t_cont *cont, t_fl fl, int ac)
 	{
 		ft_printf("total %ld\n", cont->total);
 	}
+*/
+	(void)ac;
 	print(cont, fl);
 }
