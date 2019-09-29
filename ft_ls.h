@@ -6,13 +6,13 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 20:13:15 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 20:16:01 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 21:09:55 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
-# include "libft/inc/libft.h"
+# include "libs/libft/inc/libft.h"
 # include <dirent.h>
 # include <sys/stat.h>
 # include <time.h>
@@ -29,7 +29,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <sys/xattr.h>
-# include "ft_printf/libftprintf.h"
+# include "libs/ft_printf/libftprintf.h"
 # define BUFF_SIZE 255
 
 int					g_ret;
@@ -115,6 +115,7 @@ void				check_malloc(void *addr);
 void				fill_fileaddr(t_cont *cont);
 int					max(int a, int b);
 long				ft_labs(long a);
+void				onestr_print(t_cont *cont, t_fl fl);
 void				normal_print(t_cont *cont, t_fl fl);
 void				print_master(t_cont *cont, t_fl fl, int ac);
 void				print_link(t_fil *file);

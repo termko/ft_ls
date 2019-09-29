@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror libft/libft.a ft_printf/libftprintf.a
+CFLAGS = -Wall -Wextra -Werror libs/libft/libft.a libs/ft_printf/libftprintf.a
 SRC = args_help.c column.c detailed.c error.c fill.c fill_help.c flags.c free.c\
 	  from_args.c help_sort.c helpers.c init.c main.c master.c permissions.c\
 	  print.c sort.c utils.c
@@ -8,8 +8,8 @@ OBJ = args_help.o column.o detailed.o error.o fill.o fill_help.o flags.o free.o\
 	  print.o sort.o utils.o
 HDR = ft_ls.h
 NAME = ft_ls
-LIBMAKE = libft
-PRINTFMAKE = ft_printf
+LIBMAKE = libs/libft
+PRINTFMAKE = libs/ft_printf
 
 
 all:		$(NAME)

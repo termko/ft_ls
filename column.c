@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 14:17:39 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 20:12:23 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 21:10:40 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		get_size(t_cont *cont)
 	cont->col = (int)real_col_num;
 	cont->lin = (int)num_lines;
 	if (cont->col < 1 || cont->lin < 1)
-		return (0);
+		return (2);
 	return (1);
 }
 
@@ -96,10 +96,16 @@ void	get_structured(t_cont *cont)
 void	normal_print(t_cont *cont, t_fl fl)
 {
 	int i;
+	int flag;
 
-	(void)fl;
 	i = 0;
-	if (!get_size(cont))
+	flag = get_size(cont);
+	if (flag == 2)
+	{
+		onestr_print(cont, fl);
+		return ;
+	}
+	if (!flag)
 		return ;
 	get_structured(cont);
 	while (cont->ret[i])
