@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 20:28:08 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/28 20:36:26 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 22:55:49 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	cycle_sort(t_cont *cont, int (*sort)(t_fil *a, t_fil *b), t_fl fl)
 	int	res;
 
 	i = 0;
+	ft_printf("STARTING SORT OF %s\n", cont->name);
 	while (cont->faddr[i])
 	{
 		j = i;
@@ -97,7 +98,7 @@ void	sort_master(t_cont *cont, t_fl fl)
 	int		(*sort)(t_fil *a, t_fil *b);
 	int		(*first)(t_fil *a, t_fil *b);
 
-	if (fl.f)
+	if (fl.f || !cont->files)
 		return ;
 	if (fl.r)
 	{

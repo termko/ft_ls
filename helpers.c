@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:53:18 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 17:55:36 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 22:34:13 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	set_len(int *cont, char *str)
 	int		len;
 
 	if (!str)
+	{
+		*cont = 0;
 		return ;
+	}
 	len = ft_strlen(str);
 	*cont = max(len, *cont);
 }
@@ -45,6 +48,11 @@ void	set_max_len(t_cont *cont)
 	cont->size_len = 0;
 	while (head)
 	{
+		if (head->is_dir && cont->is_root && cont->from_av)
+		{
+			head = head->next;
+			continue ;
+		}
 		cont->total += head->stat.st_blocks;
 		set_len(&(cont->own_len), head->owner);
 		set_len(&(cont->grp_len), head->group);

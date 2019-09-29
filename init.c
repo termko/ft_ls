@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 06:52:04 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 15:25:26 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 22:18:46 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int		fill_opt(t_fl *fl, char *arg)
 	i = 0;
 	while (arg[i])
 	{
-		if (!ft_strchr(flags, arg[i]) || (arg[0] == '-'
-							&& arg[1] && arg[1] == '-'))
+		if (!ft_strchr(flags, arg[i]) && arg[0] != '-')
 			illegal_opt(arg[i]);
 		fill_flags(fl, arg[i]);
 		i++;

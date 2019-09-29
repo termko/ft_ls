@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 19:38:05 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 18:05:03 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 22:28:30 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ t_cont	*set_path(int ac, char **av, t_fl fl)
 	cont->mlen = in_which_inter(cont->mlen);
 	cont->dir_num = i - cont->fil_num;
 	cont->num = cont->fil_num;
+	set_max_len(cont);
 	fill_fileaddr(cont);
 	return (cont);
 }

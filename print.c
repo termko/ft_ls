@@ -6,7 +6,7 @@
 /*   By: ydavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 02:08:07 by ydavis            #+#    #+#             */
-/*   Updated: 2019/09/29 17:54:08 by ydavis           ###   ########.fr       */
+/*   Updated: 2019/09/29 22:46:46 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	print_xattr(char *path)
 
 void	print_time(struct stat stat)
 {
+	char	**split;
 	char	*ret;
 	long	tmp;
 	int		i;
@@ -46,14 +47,10 @@ void	print_time(struct stat stat)
 	ret = ret + 4;
 	if (ft_labs(tmp - stat.st_mtime) > 15768000)
 	{
-		ft_printf(" ");
-		i = 0;
-		while (i < 7)
-			ft_printf("%c", ret[i++]);
-		i = 16;
-		ft_printf(" ");
-		while (i < 20)
-			ft_printf("%c", ret[i++]);
+		split = ft_strsplit(ret, ' ');
+		i = ft_strlen(split[3]);
+		split[3][i - 1] = '\0';
+		ft_printf(" %s  %s  %s", split[0], split[1], split[3]);
 	}
 	else
 	{
@@ -113,12 +110,14 @@ void	print_master(t_cont *cont, t_fl fl, int ac)
 {
 	void	(*print)(t_cont *cont, t_fl fl);
 
+	(void)ac;
 	if (fl.l)
 		print = detail_print;
 	else if (fl.one)
 		print = onestr_print;
 	else
 		print = normal_print;
-	(void)ac;
+	if (fl.l && (!cont->from_av || !cont->is_root))
+		ft_printf("total %d\n", cont->total);
 	print(cont, fl);
 }

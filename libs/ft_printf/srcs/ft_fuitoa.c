@@ -6,7 +6,7 @@
 /*   By: dbreiten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 02:14:09 by dbreiten          #+#    #+#             */
-/*   Updated: 2019/09/18 05:22:25 by dbreiten         ###   ########.fr       */
+/*   Updated: 2019/09/29 22:11:40 by ydavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char				*ft_fuitoa(uintmax_t n, int base, int per, int octot)
 
 	base_n = get_base(base);
 	len = len_nb(n, base_n);
-	len_oct = octot ? strlen(g_octot[base]) : 0;
+	len_oct = octot ? ft_strlen(g_octot[base]) : 0;
 	if (per > (int)len)
 	{
 		len = per;
