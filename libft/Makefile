@@ -19,30 +19,23 @@ CFILESLIB = ft_atoi.c ft_lstdel.c ft_memcpy.c\
 		 ft_strmapi.c ft_strstr.c ft_ex_arrdel.c ft_ex_matdel.c\
 		 ft_ex_prnt.c ft_ex_prnt_arr.c ft_change_val.c ft_matrix.c\
 		 ft_ftoa.c intmax_toa.c uintmax_toa.c ft_abs.c
-CFILESPRINTF = adding_to_buf.c color.c ft_printf.c helping.c print_char.c \
-			print_d.c print_f.c print_o_x_b.c print_p.c print_unsign.c \
-			set_all_fields.c set_len_type.c unsigned_addchar.c
 HFILES = inc/
 SRC_DIR = src/
-PRINTF_DIR = ft_printf/
-SRC = $(addprefix $(SRC_DIR), $(CFILESLIB)) $(addprefix $(PRINTF_DIR), $(CFILESPRINTF))
-OBJ = $(CFILESLIB:%.c=%.o) $(CFILESPRINTF:%.c=%.o) 
+OBJ = $(CFILESLIB:%.c=%.o) 
 FLAGGS = -Wall -Wextra -Werror
-
-
-$(NAME):
-	gcc $(FLAGGS) -c $(SRC) -I $(HFILES)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME) 
 
 all: $(NAME)
 
+$(NAME):
+	@gcc $(FLAGGS) -c $(CFILESLIB) -I $(HFILES)
+	@ar rc $(NAME) $(OBJ)
+
 clean:
-	rm -rf $(OBJ)
-	rm -rf *.h.gch
+	@rm -rf $(OBJ)
+	@rm -rf *.h.gch
 
 fclean: clean
-	rm -rf $(NAME) 
+	@rm -rf $(NAME) 
 
 re: fclean all
 

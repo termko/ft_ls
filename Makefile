@@ -17,7 +17,7 @@ all:		$(NAME)
 $(NAME):	$(LIBMAKE) $(SRC) $(HDR) $(PRINTFMAKE)
 	@make --directory=$(LIBMAKE)
 	@make --directory=$(PRINTFMAKE)
-	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
+	@$(CC) $(CFLAGS) $(SRC) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJ)
